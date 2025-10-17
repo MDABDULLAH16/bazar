@@ -1,0 +1,22 @@
+.an li a{
+    border-radius: none;
+}
+.bg{
+    background: red;
+    color: white;
+}
+.cart{
+    font-size: 12px;
+    padding: 0 3px;
+    background-color: red;
+    border-radius: 5px ;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    top: -14px;
+
+}
+
+NavLink{
+    background-color: #FBBD23 !important;
+}

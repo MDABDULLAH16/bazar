@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "img":"https://akira-elementor.axonvip.com/29-home_default/morbi-vitae-mi.jpg",
+        "name": "BAGS"
+    },
+    {
+        "id": 2,
+        "img":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAu_S40luGtUhnfvQ66-FUX7H4rYdUe_dQU6eDmwxMS99Jx4Nt3DKYGajILPJiM1EzpDo&usqp=CAU",
+        "name": "Watch"
+    },
+    {
+        "id": 3,
+        "img":"https://images-na.ssl-images-amazon.com/images/I/513T8GtEJ2L.jpg",
+        "name": "Shoes"
+    },
+    {
+        "id": 4,
+        "img":"https://media2.bulgari.com/f_auto,q_auto,c_pad,h_520,w_520/production/dw547e21bc/images/images/472119.png",
+        "name": "Perfum"
+    },
+    {
+        "id": 5,
+        "img":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6zOATJUjYMZI15Q43RmjeFI8ZOIKn2879qw&usqp=CAU",
+        "name": "Head Phones"
+    },
+    {
+        "id": 6,
+        "img":"https://akira-elementor.axonvip.com/58-home_default/duis-placerat-eu.jpg",
+        "name": "Duis Placerat"
+    },
+    {
+        "id": 7,
+        "img":"https://akira-elementor.axonvip.com/60-home_default/sed-viverra-felis.jpg",
+        "name": "Sed Viverra Felis"
+    },
+    {
+        "id": 8,
+        "img":"https://akira-elementor.axonvip.com/64-home_default/nulla-ac-euismod.jpg",
+        "name": "Nulla Ac Euismod"
+    },
+    {
+        "id": 9,
+        "img":"https://akira-elementor.axonvip.com/70-home_default/nunc-inter-fringilla.jpg",
+        "name": "Nunc Inter"
+    },
+    {
+        "id": 10,
+        "img":"https://akira-elementor.axonvip.com/72-home_default/maecenas-non-massa.jpg",
+        "name": "Maecenas Non"
+    },
+    {
+        "id": 11,
+        "img":"https://akira-elementor.axonvip.com/77-home_default/quisque-non-finibus.jpg",
+        "name": "Quisque Non "
+    },
+    {
+        "id": 12,
+        "img":"https://akira-elementor.axonvip.com/80-home_default/donec-volutpat-elem.jpg",
+        "name": "Donec Volutpat"
+    },
+    {
+        "id": 13,
+        "img":"https://akira-elementor.axonvip.com/83-home_default/quisque-ac-quam.jpg",
+        "name": "Quisque Ac"
+    },
+    {
+        "id": 14,
+        "img":"https://akira-elementor.axonvip.com/86-home_default/integer-nulla-orci.jpg",
+        "name": "Integer Nulla"
+    },
+    {
+        "id": 15,
+        "img":"https://akira-elementor.axonvip.com/88-home_default/sed-urna-mauris.jpg",
+        "name": "Sed Urna"
+    },
+    {
+        "id": 16,
+        "img":"https://akira-elementor.axonvip.com/90-home_default/praesent-quis-erat.jpg",
+        "name": "Praesent Quis"
+    }
+]

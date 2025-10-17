@@ -1,0 +1,53 @@
+.maindic{
+    height: 710px;
+    width: 350px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 0px;
+box-shadow:  21px 21px 42px #929292,
+             -21px -21px 42px #ffffff;
+}
+.text{
+    color: #FBBD23;
+    margin-left: 4px;
+    font-weight: 700;
+
+}
+
+.forgetpass{
+
+}
+
+.svgis{
+    height: 200px;
+
+}
+.logintitle{
+    position: absolute;
+    font-size: 30px;
+    font-weight: 600;
+    margin-left: 120px;
+    margin-top: -160px;
+    color: #fff;
+}
+svg{
+    position: relative;
+    height: 120%;
+    
+}
+input{
+    width: 100%;
+    padding: 15px;
+    border: none ;
+    border-bottom: 1px solid #FBBD23;
+    margin-bottom: 20px;
+}
+.inputfild{
+    padding: 20px;
+}
+
+.loginbtn{
+    background-color: #FBBD23 !important;
+    width: 100% !important;
+    border: none;
+}
