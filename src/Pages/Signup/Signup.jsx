@@ -1,19 +1,19 @@
-/* eslint-disable no-undef */
 import { use } from "react";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
+import ButtonGoogle from "../../Components/Buttons/ButtonGoogle";
 
 const Signup = () => {
-  const { email } = use(AuthContext);
-  console.log(email);
+  const { createUser } = use(AuthContext);
+   
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(name, email, password);
+   createUser(email,password,name)
   };
   return (
     <div className="maindics">
@@ -59,7 +59,7 @@ const Signup = () => {
             Login
           </Link>
         </p>
-        <button className=" btn btn-primary mt-7 loginbtn">Google</button>
+        <ButtonGoogle></ButtonGoogle>
         <button className=" btn btn-primary mt-8 loginbtn">Facebook</button>
       </div>
     </div>

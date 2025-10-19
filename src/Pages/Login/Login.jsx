@@ -1,27 +1,22 @@
-import     { useState } from "react";
 import { Link } from "react-router";
 import "./Login.css";
  
+import { use } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import ButtonGoogle from "../../Components/Buttons/ButtonGoogle";
+// import ButtonFacebook from "../../Components/Buttons/ButtonFacebook";
 // import { getAuth } from "firebase/auth";
 // import app from "../../Firebase.int";
 
 const Login = () => {
-  //   const auth = getAuth(app);
- 
-
-  const [emails, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-
-  const emailBlue = (e) => {
-    setEmail(e.target.value);
-  };
-  const passBlue = (e) => {
-    setPass(e.target.value);
-  };
+ const { loginUser,  } = use(AuthContext);
 
   const submit = (event) => {
-    console.log(email, pass);
     event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    loginUser(email,password)
+    
   };
 
   return (
@@ -61,8 +56,9 @@ const Login = () => {
             Sing up
           </Link>
         </p>
-        <button className=" btn btn-primary mt-7 loginbtn">Google</button>
-        <button className=" btn btn-primary mt-8 loginbtn">Facebook</button>
+       <ButtonGoogle ></ButtonGoogle>
+       {/* <ButtonFacebook></ButtonFacebook> */}
+      
       </div>
     </div>
   );
