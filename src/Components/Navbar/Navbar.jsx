@@ -1,14 +1,18 @@
 import { NavLink } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import "./Navbar.css";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import { use, useContext } from "react";
+import { AuthContext, ProductContext } from "../../contexts/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
 import { toast } from "react-toastify";
+// import { getFromDb } from "../../utils/AddToLocalDB";
 
 const Navbar = () => {
   const { user, loading } = useContext(AuthContext);
+  const { carts } = use(ProductContext);
+
+  // const carts = getFromDb() || [];
 
   const handleLogout = async () => {
     try {
@@ -36,7 +40,7 @@ const Navbar = () => {
         <NavLink to="/cart" className="relative text-2xl">
           <AiOutlineShoppingCart className="  " />
           <span className="absolute -top-2 -right-2 bg-warning text-xs rounded-full px-1.5 text-white">
-            0
+            {carts.length}
           </span>
         </NavLink>
       </li>

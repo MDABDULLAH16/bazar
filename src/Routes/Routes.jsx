@@ -3,9 +3,10 @@ import Root from "../Layout/Root";
 import Home from "../Pages/Home/Home";
 import Products from "../Pages/Products/Products";
 import RequestProduct from "../Pages/RequestProduct/RequestProduct";
-import Login from './../Pages/Login/Login';
+import Login from "./../Pages/Login/Login";
 import Cart from "../Pages/Cart/Cart";
 import Signup from "../Pages/Signup/Signup";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
         path: "/products",
         loader: async () => {
           const res = await fetch("/Products.json");
-          const data = await res.json();          
+          const data = await res.json();
           return data;
         },
         Component: Products,
@@ -38,10 +39,20 @@ export const router = createBrowserRouter([
         path: "/products/:id",
         loader: async () => {
           const res = await fetch("/Products.json");
-          const data = await res.json();          
+          const data = await res.json();
           return data;
         },
         Component: Products,
+      },
+      {
+        path: "/productDetails/:id",
+        loader: async ({params}) => {
+          const res = await fetch("/Products.json");
+          const data = await res.json();
+           const product = data.find((p) =>  (p.id) ==  (params.id));
+           return product || null;
+        },
+        Component: ProductDetails,
       },
       { path: "/requestProduct", Component: RequestProduct },
     ],

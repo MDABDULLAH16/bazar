@@ -1,12 +1,23 @@
 import { AiOutlineHeart } from "react-icons/ai";
+import { Link } from "react-router";
 
-const Card = ({ product, handleAddToCart }) => {
-  const { name, img, price, star } = product;
+import { use } from "react";
+import { ProductContext } from "../../../contexts/AuthContext";
+
+const Card = ({ product,   }) => {
+  const { name, img, price, star, id } = product;
+  const { addToCart } = use(ProductContext);
+  const handleAddToCart = (id) => {
+    addToCart(id);
+  }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden w-full  mx-auto">
+    <div
+     
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden w-full  mx-auto"
+    >
       {/* Image Section */}
-      <div className="relative group w-full overflow-hidden">
+      <Link to={`/productDetails/${id}`} className="relative group w-full overflow-hidden">
         <img
           src={img}
           alt={name}
@@ -17,7 +28,7 @@ const Card = ({ product, handleAddToCart }) => {
             {star}% OFF
           </span>
         )}
-      </div>
+      </Link>
 
       {/* Content Section */}
       <div className="p-4">
@@ -37,7 +48,7 @@ const Card = ({ product, handleAddToCart }) => {
       <div className="flex items-center justify-between px-4 pb-4">
         {/* Add to Wishlist Button */}
         <button
-          onClick={() => handleAddToCart(product)}
+          onClick={() => {handleAddToCart(id)}}
           className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           title="Add to Wishlist"
         >
@@ -46,7 +57,7 @@ const Card = ({ product, handleAddToCart }) => {
 
         {/* Buy Now Button */}
         <button
-          onClick={() => handleAddToCart(product)}
+          onClick={() => { }}
           className="btn btn-warning text-white font-semibold hover:scale-105 transition-transform duration-200 px-1 lg:px-4 lg:py-2 rounded-lg "
         >
           Buy Now
