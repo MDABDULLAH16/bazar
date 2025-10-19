@@ -34,6 +34,15 @@ export const router = createBrowserRouter([
         },
         Component: Products,
       },
+      {
+        path: "/products/:id",
+        loader: async () => {
+          const res = await fetch("/Products.json");
+          const data = await res.json();          
+          return data;
+        },
+        Component: Products,
+      },
       { path: "/requestProduct", Component: RequestProduct },
     ],
   },

@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 const TopProducts = () => {
   const [topProducts, setTopProducts] = useState([]);
-  console.log(topProducts);
+  // console.log(topProducts);
 
   useEffect(() => {
     fetch("Products.json")
