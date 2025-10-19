@@ -1,11 +1,127 @@
-import React from 'react';
+import React, { useContext, useState } from "react";
+import { useLoaderData } from "react-router";
+ 
+import { toast } from "react-toastify";
+import { ProductContext } from "../../contexts/AuthContext";
+
+const SHIPPING_COST = 5.0;
 
 const Cart = () => {
-    return (
-        <div>
-            <h1>your added product will show here</h1>
-        </div>
+  const products = useLoaderData();
+  const { carts, setCarts, removeFromCart } = useContext(ProductContext);
+
+  const cartProducts = products
+    .filter((product) => carts.includes(product.id))
+    .map((p) => ({ ...p, quantity: 1 }));
+
+  const [cartState, setCartState] =  useState(cartProducts);
+
+  const updateQuantity = (id, delta) => {
+    setCartState((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p
+      )
     );
+  };
+
+const removeProduct = (id) => {
+  // 1️⃣ Update local cart state (with quantities)
+  const updatedCartState = cartState.filter((p) => p.id !== id);
+  setCartState(updatedCartState);
+removeFromCart(id)
+  // 2️⃣ Update context and localStorage (only IDs)
+  const updatedCartIds = updatedCartState.map((p) => p.id);
+  setCarts(updatedCartIds);
+  localStorage.setItem("cart", JSON.stringify(updatedCartIds));
+
+  toast.info("Product removed from cart");
+};
+
+
+  const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
+  const total = subtotal + SHIPPING_COST;
+
+  if (cartState.length === 0)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h2 className="text-2xl font-semibold text-gray-600">
+          Your cart is empty
+        </h2>
+      </div>
+    );
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 flex flex-col lg:flex-row gap-8">
+      {/* Left: Cart Items */}
+      <div className="flex-1 flex flex-col gap-6">
+        {cartState.map((product) => (
+          <div
+            key={product.id}
+            className="flex flex-col md:flex-row items-center gap-4 border rounded-lg p-4 hover:shadow-lg transition-shadow"
+          >
+            <img
+              src={product.img}
+              alt={product.name}
+              className="w-28 h-28 object-cover rounded-md"
+            />
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold">{product.name}</h2>
+              <p className="text-gray-500">${product.price.toFixed(2)}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <button
+                  onClick={() => updateQuantity(product.id, -1)}
+                  className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  -
+                </button>
+                <span className="px-2">{product.quantity}</span>
+                <button
+                  onClick={() => updateQuantity(product.id, 1)}
+                  className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              <p className="font-semibold">
+                ${(product.price * product.quantity).toFixed(2)}
+              </p>
+              <button
+                onClick={() => removeProduct(product.id)}
+                className="text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Right: Summary Panel */}
+      <div className="w-full lg:w-96 bg-gray-50 dark:bg-gray-800 rounded-lg p-6 flex flex-col gap-4 sticky top-6 h-fit shadow-md">
+        <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+        <div className="flex justify-between">
+          <span>Subtotal</span>
+          <span>${subtotal.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Shipping</span>
+          <span>${SHIPPING_COST.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between font-bold text-lg mt-2 border-t pt-2">
+          <span>Total</span>
+          <span>${total.toFixed(2)}</span>
+        </div>
+        <button
+          onClick={() => toast.success("Proceeding to checkout...")}
+          className="mt-4 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition-colors"
+        >
+          Buy Now
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Cart;

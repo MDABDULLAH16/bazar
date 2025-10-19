@@ -25,7 +25,15 @@ export const router = createBrowserRouter([
       },
       { path: "/login", Component: Login },
       { path: "/signup", Component: Signup },
-      { path: "/cart", Component: Cart },
+      {
+        path: "/cart",
+        loader: async () => {
+          const res = await fetch("/Products.json");
+          const data = await res.json();
+          return data;
+        },
+        Component: Cart,
+      },
       {
         path: "/products",
         loader: async () => {
@@ -46,11 +54,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/productDetails/:id",
-        loader: async ({params}) => {
+        loader: async ({ params }) => {
           const res = await fetch("/Products.json");
           const data = await res.json();
-           const product = data.find((p) =>  (p.id) ==  (params.id));
-           return product || null;
+          const product = data.find((p) => p.id == params.id);
+          return product || null;
         },
         Component: ProductDetails,
       },

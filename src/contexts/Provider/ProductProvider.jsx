@@ -29,9 +29,18 @@ const ProductProvider = ({ children }) => {
     return true;
   };
 
+   const removeFromCart = (id) => {
+     if (!carts.includes(id)) return; // item not in cart
+
+     const updatedCart = carts.filter((pid) => pid !== id);
+     setCarts(updatedCart);
+     localStorage.setItem("cart", JSON.stringify(updatedCart)); // persist changes
+     toast.info("Product removed from cart");
+   };
   const productInfo = {
     carts,
     addToCart, // provide add function to children
+    removeFromCart,
   };
 
   return (
