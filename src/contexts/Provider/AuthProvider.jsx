@@ -11,11 +11,13 @@ import { AuthContext } from "../AuthContext";
 import { auth } from "../../firebase/firebase.config";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router";
 const GoogleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+ 
 
   // ✅ Create User + Update displayName
   const createUser = async (email, password, name) => {
@@ -69,6 +71,7 @@ const AuthProvider = ({ children }) => {
       console.log(logged);
       if (logged) {
         toast.success('User Login Successfully!!')
+        return <Navigate to='/'></Navigate>
       }
       
     }).catch(err => {

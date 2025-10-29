@@ -3,6 +3,7 @@ import Banner from "../../Components/Banner/Banner";
  
 import Category from '../../Components/Cataragry/Category';
 import TopProducts from "../../Components/TopProducts/TopProducts";
+import Footer from "../../Components/Footer/Footer";
  
 
 
@@ -16,6 +17,7 @@ const Home = () => {
       
    <TopProducts></TopProducts>
       {/* <Bags></Bags> */}
+      <Footer></Footer>
     </div>
   );
 };
