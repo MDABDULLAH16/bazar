@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import ProductRequestForm from "../../Components/Request_Products/Request_Products";
 
 const RequestProduct = () => {
-    return (
-        <div>
-            <h1>you can request for product</h1>
-        </div>
-    );
+  return (
+    <div>
+      <ProductRequestForm></ProductRequestForm>
+    </div>
+  );
 };
 
 export default RequestProduct;

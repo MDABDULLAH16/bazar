@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+    theme:light --default
+};
 
 ul a.active{
     background-color: #FBBD23;

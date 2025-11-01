@@ -12,12 +12,12 @@ const Card = ({ product,   }) => {
   }
 
   return (
-    <div
-     
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden w-full  mx-auto"
-    >
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden w-full  mx-auto">
       {/* Image Section */}
-      <Link to={`/productDetails/${id}`} className="relative group w-full overflow-hidden">
+      <Link
+        to={`/productDetails/${id}`}
+        className="relative group w-full overflow-hidden"
+      >
         <img
           src={img}
           alt={name}
@@ -48,7 +48,9 @@ const Card = ({ product,   }) => {
       <div className="flex items-center justify-between px-4 pb-4">
         {/* Add to Wishlist Button */}
         <button
-          onClick={() => {handleAddToCart(id)}}
+          onClick={() => {
+            handleAddToCart(id);
+          }}
           className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           title="Add to Wishlist"
         >
@@ -57,7 +59,9 @@ const Card = ({ product,   }) => {
 
         {/* Buy Now Button */}
         <button
-          onClick={() => { }}
+          onClick={() => {
+            handleAddToCart(id);
+          }}
           className="btn btn-warning text-white font-semibold hover:scale-105 transition-transform duration-200 px-1 lg:px-4 lg:py-2 rounded-lg "
         >
           Buy Now

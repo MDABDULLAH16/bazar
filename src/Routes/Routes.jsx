@@ -7,6 +7,10 @@ import Login from "./../Pages/Login/Login";
 import Cart from "../Pages/Cart/Cart";
 import Signup from "../Pages/Signup/Signup";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
+import PrivateRoute from "./PrivateRoutes";
+import MyProducts from "../Pages/MyProducts/MyProducts";
+import MyProfile from "../Pages/MyProfile/MyProfile";
+import Profile from "../Pages/MyProfile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -15,38 +19,40 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        // loader: async () => {
-        //   const res = await fetch("/Products.json");
-        //   const data = await res.json();
-        //   const categories = data.map((item) => item.category);
-        //   return categories;
-        // },
+
         Component: Home,
       },
       { path: "/login", Component: Login },
       { path: "/signup", Component: Signup },
-      {
-        path: "/cart",
-        loader: async () => {
-          const res = await fetch("/Products.json");
-          const data = await res.json();
-          return data;
-        },
-        Component: Cart,
-      },
+
       {
         path: "/products",
         loader: async () => {
-          const res = await fetch("/Products.json");
+          const res = await fetch(
+            "https://urban-server-brown.vercel.app/products"
+          );
           const data = await res.json();
           return data;
         },
         Component: Products,
       },
       {
+        path: "cart",
+        loader: async () => {
+          const res = await fetch(
+            "https://urban-server-brown.vercel.app/products"
+          );
+          const data = await res.json();
+          return data;
+        },
+        Component: Cart,
+      },
+      {
         path: "/products/:id",
         loader: async () => {
-          const res = await fetch("/Products.json");
+          const res = await fetch(
+            "https://urban-server-brown.vercel.app/products/:id"
+          );
           const data = await res.json();
           return data;
         },
@@ -55,14 +61,46 @@ export const router = createBrowserRouter([
       {
         path: "/productDetails/:id",
         loader: async ({ params }) => {
-          const res = await fetch("/Products.json");
+          const res = await fetch(
+            "https://urban-server-brown.vercel.app/productDetails/:id"
+          );
           const data = await res.json();
           const product = data.find((p) => p.id == params.id);
           return product || null;
         },
         Component: ProductDetails,
       },
-      { path: "/requestProduct", Component: RequestProduct },
+      {
+        path: "myProfile",
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
+          </PrivateRoute>
+        ),
+        children: [
+          { index: true, Component: Profile },
+          { path: "myRequest", Component: MyProducts },
+          {
+            path: "cart",
+            loader: async () => {
+              const res = await fetch(
+                "https://urban-server-brown.vercel.app/products"
+              );
+              const data = await res.json();
+              return data;
+            },
+            Component: Cart,
+          },
+        ],
+      },
+      {
+        path: "/requestProduct",
+        element: (
+          <PrivateRoute>
+            <RequestProduct></RequestProduct>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

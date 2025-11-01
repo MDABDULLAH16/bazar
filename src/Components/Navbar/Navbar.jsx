@@ -25,7 +25,7 @@ const Navbar = () => {
 
   // 🧩 Navigation Links
   const navLinks = (
-    <>
+    <div className=" flex gap-3">
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
@@ -34,6 +34,9 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink to="/products">Products</NavLink>
+      </li>
+      <li>
+        <NavLink to="/myProfile">MyProfile</NavLink>
       </li>
 
       <li>
@@ -49,7 +52,7 @@ const Navbar = () => {
           <NavLink to="/login">Login</NavLink>
         </li>
       )}
-    </>
+    </div>
   );
 
   return (

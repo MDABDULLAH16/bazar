@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import "./Login.css";
  
 import { use } from "react";
@@ -9,13 +9,23 @@ import ButtonGoogle from "../../Components/Buttons/ButtonGoogle";
 // import app from "../../Firebase.int";
 
 const Login = () => {
- const { loginUser,  } = use(AuthContext);
+  const { loginUser, } = use(AuthContext);
+  const location = useLocation()
+  const navigate = useNavigate()
+ const from = location.state?.from?.pathname || "/";
 
   const submit = (event) => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    loginUser(email,password)
+    loginUser(email, password).then(result => {
+      const user = result;
+      console.log(user);
+      
+            
+        navigate(from,{replace:true})
+   
+    })
     
   };
 

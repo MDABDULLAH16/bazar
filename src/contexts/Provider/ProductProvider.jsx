@@ -9,6 +9,8 @@ import { ProductContext } from "../AuthContext";
 const ProductProvider = ({ children }) => {
   const [carts, setCarts] = useState([]);
 
+  const [products, setProducts] = useState([]);
+
   // Load cart from localStorage on mount
   useEffect(() => {
     const storedCart = getFromDb() || [];
@@ -41,6 +43,8 @@ const ProductProvider = ({ children }) => {
     carts,
     addToCart, // provide add function to children
     removeFromCart,
+    products,
+    setProducts,
   };
 
   return (

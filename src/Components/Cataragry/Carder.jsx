@@ -3,7 +3,9 @@ import "./Catagory.css";
 import { Link,   } from "react-router";
 
 const Carder = ({ category }) => {
-  const { img, name,id} = category;
+  const { img, name, id } = category;
+  // console.log(img);
+  
 
   return (
     <Link to={`/products/${id}`} title={name} className="bg-base-100 shadow-sm rounded-lg overflow-hidden w-full transition-transform duration-300 hover:scale-105 ">
