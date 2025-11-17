@@ -11,6 +11,8 @@ import PrivateRoute from "./PrivateRoutes";
 import MyProducts from "../Pages/MyProducts/MyProducts";
 import MyProfile from "../Pages/MyProfile/MyProfile";
 import Profile from "../Pages/MyProfile/Profile";
+import AllReviews from "../Pages/AllReviews/AllReviews";
+import ReviewPost from "../Pages/ReviewPost/ReviewPost";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +38,7 @@ export const router = createBrowserRouter([
         },
         Component: Products,
       },
+
       {
         path: "cart",
         loader: async () => {
@@ -48,7 +51,7 @@ export const router = createBrowserRouter([
         Component: Cart,
       },
       {
-        path: "/products/:id",
+        path: "/products",
         loader: async () => {
           const res = await fetch(
             "https://urban-server-brown.vercel.app/products/:id"
@@ -59,14 +62,25 @@ export const router = createBrowserRouter([
         Component: Products,
       },
       {
+        path: "reviews",
+        loader: async () => {
+          const res = await fetch(
+            "https://urban-server-brown.vercel.app/reviews"
+          );
+          const data = await res.json();
+          return data;
+        },
+        Component: AllReviews,
+      },
+      {
         path: "/productDetails/:id",
         loader: async ({ params }) => {
           const res = await fetch(
-            "https://urban-server-brown.vercel.app/productDetails/:id"
+            `https://urban-server-brown.vercel.app/products/${params.id}`
           );
           const data = await res.json();
-          const product = data.find((p) => p.id == params.id);
-          return product || null;
+
+          return data || null;
         },
         Component: ProductDetails,
       },
@@ -90,6 +104,10 @@ export const router = createBrowserRouter([
               return data;
             },
             Component: Cart,
+          },
+          {
+            path: "addReview",
+            Component: ReviewPost,
           },
         ],
       },

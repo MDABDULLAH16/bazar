@@ -39,6 +39,16 @@ const MyProfile = () => {
         >
           My Cart
         </NavLink>
+        <NavLink
+          to="addReview" // ✅ relative path
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-blue-500"
+          }
+        >
+          Add Review
+        </NavLink>
       </div>
 
       <Outlet />

@@ -5,7 +5,7 @@ import { use } from "react";
 import { ProductContext } from "../../../contexts/AuthContext";
 
 const Card = ({ product,   }) => {
-  const { name, img, price, star, id } = product;
+  const { name, img, price, star, _id } = product;
   const { addToCart } = use(ProductContext);
   const handleAddToCart = (id) => {
     addToCart(id);
@@ -15,7 +15,7 @@ const Card = ({ product,   }) => {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden w-full  mx-auto">
       {/* Image Section */}
       <Link
-        to={`/productDetails/${id}`}
+        to={`/productDetails/${_id}`}
         className="relative group w-full overflow-hidden"
       >
         <img

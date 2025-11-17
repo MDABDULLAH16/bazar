@@ -25,24 +25,27 @@ const Navbar = () => {
 
   // 🧩 Navigation Links
   const navLinks = (
-    <div className=" flex gap-3">
-      <li>
+    <div className=" flex flex-col lg:flex-row gap-3">
+      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/">Home</NavLink>
       </li>
-      <li>
+      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/requestProduct">Request Product</NavLink>
       </li>
-      <li>
+      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/products">Products</NavLink>
       </li>
-      <li>
+      <li className="hover:bg-[#FBBD23] hover:text-white">
+        <NavLink to="/reviews">Reviews</NavLink>
+      </li>
+      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/myProfile">MyProfile</NavLink>
       </li>
 
-      <li>
+      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/cart" className="relative text-2xl">
           <AiOutlineShoppingCart className="  " />
-          <span className="absolute -top-2 -right-2 bg-warning text-xs rounded-full px-1.5 text-white">
+          <span className="absolute -top-2 -right-2  bg-warning text-xs rounded-full px-1.5 text-white">
             {carts.length}
           </span>
         </NavLink>

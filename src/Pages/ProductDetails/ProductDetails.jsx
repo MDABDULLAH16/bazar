@@ -12,7 +12,7 @@ import { ProductContext } from "../../contexts/AuthContext";
 
 const ProductDetails = () => {
   const product = useLoaderData();
-
+ 
   if (!product) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -93,12 +93,12 @@ const ProductDetails = () => {
           <div className="flex flex-wrap gap-4 mt-6">
             <button
               onClick={() => handleAddToCart(id)}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition-all"
+              className="flex items-center gap-2 bg-[#FBBD23] hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition-all"
             >
               <AiOutlineShoppingCart className="text-xl" />
               Add to Cart
             </button>
-            <button className="bg-black dark:bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl shadow-md transition-all">
+            <button className="bg-black dark:bg-gray-800 hover:bg-[#FBBD23] text-white px-6 py-3 rounded-xl shadow-md transition-all">
               Buy Now
             </button>
           </div>
