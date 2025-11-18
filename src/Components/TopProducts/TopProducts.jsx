@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import Card from "../Services-Card/Card/Card";
 import Container from "../Container/Container";
 import { Link } from "react-router";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const TopProducts = () => {
   const [topProducts, setTopProducts] = useState([]);
   // console.log(topProducts);
 
   useEffect(() => {
-    fetch("Products.json")
+    fetch(`${BACKEND_URL}/products`)
       .then((res) => res.json())
       .then((data) => {
         const top10 = data.slice(0, 12);

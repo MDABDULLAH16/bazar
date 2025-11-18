@@ -14,6 +14,7 @@ import Profile from "../Pages/MyProfile/Profile";
 import AllReviews from "../Pages/AllReviews/AllReviews";
 import ReviewPost from "../Pages/ReviewPost/ReviewPost";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
         path: "/products",
         loader: async () => {
           const res = await fetch(
-            "https://urban-server-brown.vercel.app/products"
+            `${BACKEND_URL}/products`
           );
           const data = await res.json();
           return data;
@@ -42,31 +43,17 @@ export const router = createBrowserRouter([
       {
         path: "cart",
         loader: async () => {
-          const res = await fetch(
-            "https://urban-server-brown.vercel.app/products"
-          );
+          const res = await fetch(`${BACKEND_URL}/products`);
           const data = await res.json();
           return data;
         },
         Component: Cart,
       },
-      {
-        path: "/products",
-        loader: async () => {
-          const res = await fetch(
-            "https://urban-server-brown.vercel.app/products/:id"
-          );
-          const data = await res.json();
-          return data;
-        },
-        Component: Products,
-      },
+      
       {
         path: "reviews",
         loader: async () => {
-          const res = await fetch(
-            "https://urban-server-brown.vercel.app/reviews"
-          );
+          const res = await fetch(`${BACKEND_URL}/reviews`);
           const data = await res.json();
           return data;
         },
@@ -76,7 +63,7 @@ export const router = createBrowserRouter([
         path: "/productDetails/:id",
         loader: async ({ params }) => {
           const res = await fetch(
-            `https://urban-server-brown.vercel.app/products/${params.id}`
+            `${BACKEND_URL}/products/${params.id}`
           );
           const data = await res.json();
 
@@ -97,9 +84,7 @@ export const router = createBrowserRouter([
           {
             path: "cart",
             loader: async () => {
-              const res = await fetch(
-                "https://urban-server-brown.vercel.app/products"
-              );
+              const res = await fetch(`${BACKEND_URL}/products`);
               const data = await res.json();
               return data;
             },

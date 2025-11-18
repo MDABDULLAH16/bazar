@@ -1,18 +1,20 @@
- 
-import Carder from './Carder';
+ import Carder from './Carder';
 import { useEffect, useState } from 'react';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const Category = () => {
     const [categories, setCategories] = useState([])
     
     useEffect(() => {
-        fetch('/Products.json').then(res => res.json()).then(data => {
+        fetch(`${BACKEND_URL}/products`)
+          .then((res) => res.json())
+          .then((data) => {
             const categories = [
               ...new Map(data.map((user) => [user.name, user])).values(),
             ];
-            const topCate= categories.slice(0,18)
-            setCategories(topCate)
-        })
+            const topCate = categories.slice(0, 18);
+            setCategories(topCate);
+          });
     },[])
     
     

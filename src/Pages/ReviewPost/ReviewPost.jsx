@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
- 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const ReviewPost = () => {
   const [imgUrl, setImgUrl] = useState("");
   const [rating, setRating] = useState("");
@@ -20,7 +20,7 @@ const ReviewPost = () => {
     // console.log("Review Submitted:", reviewData);
 
     //  send data to backend
-    fetch(`https://urban-server-brown.vercel.app/reviews`, {
+    fetch(`${BACKEND_URL}/reviews`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reviewData),

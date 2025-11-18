@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const ProductRequestForm = () => {
   const { user,   } = useContext(AuthContext);
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const ProductRequestForm = () => {
     console.log("Product Request Submitted:", formData);
     // TODO: send data to your backend or Firebase
  
-    fetch("https://urban-server-brown.vercel.app/productRequest", {
+    fetch(`${BACKEND_URL}/productRequest`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -34,7 +35,7 @@ const ProductRequestForm = () => {
       .then((data) => {
         console.log(data);
         if (data.insertedId) {
-          toast.success('Your Request Successful!')
+          toast.success("Your Request Successful!");
           setFormData({
             name: "",
             priceRange: "",
@@ -43,8 +44,7 @@ const ProductRequestForm = () => {
             img: "",
             email: user.email,
           });
-       }
-         
+        }
       });
   };
 

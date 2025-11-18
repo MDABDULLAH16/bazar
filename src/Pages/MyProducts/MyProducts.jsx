@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext, ProductContext } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
  
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
   const { products, setProducts } = useContext(ProductContext);
@@ -9,9 +10,7 @@ const MyProducts = () => {
   // Fetch products by user email
   useEffect(() => {
     if (user?.email) {
-      fetch(
-        `https://urban-server-brown.vercel.app/productRequest?email=${user.email}`
-      )
+      fetch(`${BACKEND_URL}/productRequest?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => setProducts(data))
         .catch((err) => console.error("Error fetching products:", err));
