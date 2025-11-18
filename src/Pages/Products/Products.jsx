@@ -4,34 +4,33 @@ import Card from "../../Components/Services-Card/Card/Card";
 import Container from "../../Components/Container/Container";
 
 const Products = () => {
-  const {  id } = useParams();
+  const { id } = useParams(); // category id if clicked
   const products = useLoaderData();
+
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 24;
+useEffect(() => {
+  let updatedProducts = products;
 
-  // ✅ Filter logic — runs whenever catId or searchTerm changes
-  useEffect(() => {
-    let updatedProducts = products;
+  if (id) {
+    updatedProducts = updatedProducts.filter(
+      (p) => p.categoryId && String(p.categoryId) === String(id)
+    );
+  }
 
-    if (id) {
-      updatedProducts = updatedProducts.filter(
-        (p) =>  (p.category?.id) ==  (id)
-      );
-    }
+  if (searchTerm.trim() !== "") {
+    updatedProducts = updatedProducts.filter((p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
 
-    if (searchTerm.trim() !== "") {
-      updatedProducts = updatedProducts.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredProducts(updatedProducts);
-    setCurrentPage(1); // reset pagination after filtering
-  }, [id, searchTerm, products]);
+  setFilteredProducts(updatedProducts);
+  setCurrentPage(1); // reset pagination after filtering
+}, [id, searchTerm, products]);
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -62,7 +61,7 @@ const Products = () => {
           <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
             {currentProducts.length > 0 ? (
               currentProducts.map((product) => (
-                <Card key={product.id} product={product} />
+                <Card key={product._id} product={product} />
               ))
             ) : (
               <p className="col-span-full text-center text-gray-500">
@@ -72,23 +71,25 @@ const Products = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex justify-center mt-6 space-x-2">
-            {Array.from({ length: totalPages }, (_, idx) => idx + 1).map(
-              (page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 rounded ${
-                    page === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
-                  }`}
-                >
-                  {page}
-                </button>
-              )
-            )}
-          </div>
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-6 space-x-2">
+              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-3 py-1 rounded ${
+                      page === currentPage
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+            </div>
+          )}
         </div>
       </Container>
     </div>
