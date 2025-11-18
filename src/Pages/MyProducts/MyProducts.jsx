@@ -22,7 +22,7 @@ const MyProducts = () => {
     if (!window.confirm("Are you sure you want to delete this product?"))
       return;
 
-    fetch(`https://urban-server-brown.vercel.app/productRequest/${id}`, {
+    fetch(`${BACKEND_URL}/productRequest/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
