@@ -28,6 +28,26 @@ const MyProfile = () => {
         >
           My Request
         </NavLink>
+        <NavLink
+          to="addProduct"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-blue-500"
+          }
+        >
+          Add Product
+        </NavLink>
+        <NavLink
+          to="myAddedProducts"
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-blue-500"
+          }
+        >
+          My Products
+        </NavLink>
 
         <NavLink
           to="cart" // ✅ relative path
@@ -48,6 +68,16 @@ const MyProfile = () => {
           }
         >
           Add Review
+        </NavLink>
+        <NavLink
+          to="addCategory" // ✅ relative path
+          className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+              : "text-gray-600 hover:text-blue-500"
+          }
+        >
+          Add Category
         </NavLink>
       </div>
 

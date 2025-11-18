@@ -6,12 +6,14 @@ const ReviewPost = () => {
   const [imgUrl, setImgUrl] = useState("");
   const [rating, setRating] = useState("");
   const [comment, setComment] = useState("");
+  const [name,setName]= useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const reviewData = {
       img: imgUrl,
+      name,
       rating,
       comment,
       date: new Date().toISOString(),
@@ -33,6 +35,7 @@ const ReviewPost = () => {
     setImgUrl("");
     setRating("");
     setComment("");
+    setName('')
   };
 
   return (
@@ -41,6 +44,17 @@ const ReviewPost = () => {
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Image URL */}
+        <div>
+          <label className="block font-medium mb-1">Product name</label>
+          <input
+            type="text"
+            placeholder="Product name"
+            value={imgUrl}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full p-2 border rounded-lg"
+          />
+        </div>
         <div>
           <label className="block font-medium mb-1">Image URL</label>
           <input

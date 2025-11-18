@@ -13,6 +13,9 @@ import MyProfile from "../Pages/MyProfile/MyProfile";
 import Profile from "../Pages/MyProfile/Profile";
 import AllReviews from "../Pages/AllReviews/AllReviews";
 import ReviewPost from "../Pages/ReviewPost/ReviewPost";
+import AddProduct from "../Pages/AddProduct/AddProduct";
+import AddCategory from "../Pages/AddCategory/AddCategory";
+import MyAddedProducts from "../Pages/MyAddedProducts/MyAddedProducts";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const router = createBrowserRouter([
@@ -93,6 +96,18 @@ export const router = createBrowserRouter([
           {
             path: "addReview",
             Component: ReviewPost,
+          },
+          {
+            path: "addCategory",
+            Component: AddCategory,
+          },
+          {
+            path: "myAddedProducts",
+            Component: MyAddedProducts,
+          },
+          {
+            path: "addProduct",
+            Component: AddProduct,
           },
         ],
       },
