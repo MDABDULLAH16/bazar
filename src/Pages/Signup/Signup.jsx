@@ -1,69 +1,172 @@
-import { use } from "react";
-import "./Signup.css";
-import { Link } from "react-router";
-import { AuthContext } from "../../contexts/AuthContext";
-import ButtonGoogle from "../../Components/Buttons/ButtonGoogle";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+ 
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
+ 
+import { toast } from "react-toastify";
+import axios from "axios";
+ 
+import useAuth from "../../hooks/useAuth";
+import GoogleSignIn from "../../Components/Buttons/ButtonGoogle";
 
 const Signup = () => {
-  const { createUser } = use(AuthContext);
-   
+  const { createUser, updateUserInfo } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-   createUser(email,password,name)
+  const from = location.state?.from?.pathname || "/";
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const photo = data.photo[0];
+    createUser(data.email, data.password)
+      .then((result) => {
+      console.log({result});
+      
+        //image store first in image;
+        const formData = new FormData();
+        formData.append("image", photo);
+        //ibb url key
+        const imageHostKey = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_image_host_key
+        }`;
+        axios.post(`${imageHostKey}`, formData).then(async (res) => {
+          //make user info
+          console.log({res});
+          
+          const profileInfo = {
+            displayName: data.name,
+            photoURL: res.data?.data?.display_url,
+          };
+          await updateUserInfo(profileInfo)
+            .then((d) => {
+              console.log("profile update done", d);
+              const user = result.user;
+              console.log({user});
+              
+              console.log("user", user.displayName, user.photoURL);
+              const newUser = {
+                name: user?.displayName,
+                email: user?.email,
+                image: user?.photoURL,
+                role: "user",
+              };
+              console.log("nwe user", newUser);
+
+              axios
+                .post(`${import.meta.env.VITE_BACKEND_URL}/users`, newUser)
+                .then((res) => {
+                  if (res.data.insertedId) {
+                    toast.success("Register Successful!!");
+                    navigate(from, { replace: true });
+                  }
+                });
+            })
+            .catch((err) => console.log(err));
+        });
+
+        //apply db functionality;
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
-  return (
-    <div className="maindics">
-      <div className="svgis">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path
-            fill="#FBBD23"
-            fillOpacity="1"
-            d="M0,224L34.3,208C68.6,192,137,160,206,170.7C274.3,181,343,235,411,266.7C480,299,549,309,617,304C685.7,299,754,277,823,224C891.4,171,960,85,1029,96C1097.1,107,1166,213,1234,245.3C1302.9,277,1371,235,1406,213.3L1440,192L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"
-          ></path>
-        </svg>
-      </div>
-      <h1 className="logintitle">Sign up</h1>
-      <div className="inputfild">
-        <form onSubmit={handleSubmit} action="#">
+
+
+
+return (
+  <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+      <h1 className="text-3xl font-bold text-center mb-4">Create an Account</h1>
+      <p className="text-center text-gray-600 mb-6">Register with UrbanCart</p>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* File Input as Button */}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Choose an Profile image</span>
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            {...register("photo", { required: "Image is required!" })}
+            className=" file-input-bordered w-full"
+          />
+        </div>
+
+        {/* Name */}
+        <div>
+          <label className="block mb-1 font-medium">Full Name</label>
           <input
             type="text"
-            name="name"
-            placeholder="Enter Your Name"
-            required
+            placeholder="Enter your name"
+            {...register("name", { required: "Name is required" })}
+            className="input input-bordered w-full"
           />
-          <input name="email" type="email" placeholder="Enter Your Email" />
-          <p className="text-red-500" hidden>
-            Wrong Email
-          </p>
-          <input
-            name="password"
-            type="password"
-            placeholder="Enter Your Password"
-            required
-          />
-          <p className="text-red-500" hidden>
-            Wrong Email
-          </p>
-          <button type="submit" className="mt-7 btn btn-primary loginbtn">
-            Sign up
-          </button>
-        </form>
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          )}
+        </div>
 
-        <p className="font-bold mt-7 ml-3">
-          Already have an Account?{" "}
-          <Link to="/login" className="text ">
-            Login
-          </Link>
-        </p>
-        <ButtonGoogle></ButtonGoogle>
-        <button className=" btn btn-primary mt-8 loginbtn">Facebook</button>
-      </div>
+        {/* Email */}
+        <div>
+          <label className="block mb-1 font-medium">Email Address</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            {...register("email", { required: "Email is required" })}
+            className="input input-bordered w-full"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="block mb-1 font-medium">Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: 6,
+            })}
+            className="input input-bordered w-full"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message ||
+                "Password must be at least 6 characters"}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary w-full text-white mt-3"
+        >
+          Register
+        </button>
+      </form>
+
+      <p className="text-center mt-5 text-sm text-gray-700">
+        Already have an account?{" "}
+        <Link to="/login" className="text-blue-600 font-medium">
+          Login
+        </Link>
+      </p>
+
+      <div className="divider my-6">Or Continue With</div>
+      <GoogleSignIn />
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Signup;

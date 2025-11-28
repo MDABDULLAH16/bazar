@@ -1,29 +1,61 @@
-import { FcGoogle } from "react-icons/fc";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
+import React from "react";
+import useAuth from "./../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const ButtonGoogle = () => {
-  const { handleGoogleLogin } = useContext(AuthContext);
-  const location = useLocation();
+const GoogleSignIn = () => {
+  const { handleGoogleLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const handleGoogle = () => {
-    handleGoogleLogin().then((result) => {
-            const user = result.user;
-      console.log(user);
-      navigate(from,{replace:true})
+  const handleGoogleButton = () => {
+    handleGoogleLogin()
+      .then((result) => {
+        const user = result.user;
+        toast.success("Login Successful!");
+        navigate(from, { replace: true });
+        console.log({ user }, "login suss");
+
+        const newUser = {
+          name: user?.displayName,
+          email: user?.email,
+          image: user?.photoURL,
+          role: "user",
+        };
+
+        axios
+          .post(`${import.meta.env.VITE_BACKEND_URL}/users`, newUser)
+          .then((res) => {
+            if (res.data?.acknowledged || res.data?.userExists) {
+              // userExists = if backend returns when email already exists
+            }
           })
-          .catch((err) => console.log(err.message));
-      
+          .catch((err) => {
+            console.log(err);
+            toast.error("Login failed!");
+          });
+      })
+      .catch(() => toast.error("Google sign-in failed!"));
   };
 
   return (
-    <button onClick={handleGoogle} className="btn btn-primary mt-7 loginbtn">
-      <FcGoogle className="text-2xl" /> Google
+    <button
+      onClick={handleGoogleButton}
+      type="button"
+      className="btn btn-outline hover:bg-yellow-400 w-full"
+    >
+      <span className="mr-2">
+        <img
+          src="https://i.ibb.co.com/wZk0mHgj/search.png"
+          alt="Google"
+          className="w-5 inline"
+        />
+      </span>
+      Login with Google
     </button>
   );
 };
 
-export default ButtonGoogle;
+export default GoogleSignIn;

@@ -40,7 +40,7 @@ const Navbar = () => {
         <NavLink to="/reviews">Reviews</NavLink>
       </li>
       <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/myProfile">MyProfile</NavLink>
+        <NavLink to="/myProfile">Dashboard</NavLink>
       </li>
 
       <li className="hover:bg-[#FBBD23] hover:text-white">

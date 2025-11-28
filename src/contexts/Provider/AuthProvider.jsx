@@ -17,22 +17,13 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const createUser = async (email, password, name) => {
-    try {
-      setLoading(true);
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(result.user, { displayName: name });
-      setUser({ ...result.user, displayName: name });
-      toast.success("Account created successfully!");
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const createUser = (email, password) => {
+    setLoading(true)
+   return createUserWithEmailAndPassword(auth,email,password)
+ }
+  const updateUserInfo = (info) => {
+    setLoading(true);
+    return updateProfile(auth.currentUser, info);
   };
 
   const loginUser = async (email, password) => {
@@ -43,6 +34,7 @@ const AuthProvider = ({ children }) => {
       console.log(result.user);
 
       toast.success("User logged in successfully!");
+      setLoading(false)
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -73,6 +65,7 @@ const AuthProvider = ({ children }) => {
     createUser,
     loginUser,
     handleGoogleLogin,
+    updateUserInfo,
   };
 
   return (
