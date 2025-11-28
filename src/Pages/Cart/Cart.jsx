@@ -1,45 +1,65 @@
-import React, { useContext, useState } from "react";
-import { useLoaderData } from "react-router";
- 
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useLoggedUser from "../../hooks/useLoggedUser";
+import axios from "axios";
 import { ProductContext } from "../../contexts/AuthContext";
+ 
 
-const SHIPPING_COST = 5.0;
+const url = import.meta.env.VITE_BACKEND_URL;
+const SHIPPING_COST = 49;
 
 const Cart = () => {
-  const products = useLoaderData();
-  const { carts, setCarts, removeFromCart } = useContext(ProductContext);
+  const {setCarts}= useContext(ProductContext) 
+  const { loggedUser } = useLoggedUser();
+  const [cart, setCart] = useState({
+    items: [],
+    subtotal: 0,
+    total: 0,
+  });
 
-  const cartProducts = products
-    .filter((product) => carts.includes(product.id))
-    .map((p) => ({ ...p, quantity: 1 }));
+  const [cartState, setCartState] = useState([]);
+ 
 
-  const [cartState, setCartState] =  useState(cartProducts);
+  useEffect(() => {
+    if (loggedUser?.email) {
+      axios
+        .get(`${url}/cart/${loggedUser.email}`)
+        .then((res) => {
+          setCart(res.data);
+          setCartState(res.data.items || []);
+          setCarts(res.data.items || []);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [loggedUser]);
+ 
+  
+  
+  // const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
+  // const total = subtotal + SHIPPING_COST;
 
-  const updateQuantity = (id, delta) => {
+  const updateQuantity = (productId, delta) => {
     setCartState((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p
+        p.productId === productId
+          ? { ...p, quantity: Math.max(1, p.quantity + delta) }
+          : p
       )
     );
   };
 
-const removeProduct = (id) => {
-  // 1️⃣ Update local cart state (with quantities)
-  const updatedCartState = cartState.filter((p) => p.id !== id);
-  setCartState(updatedCartState);
-removeFromCart(id)
-  // 2️⃣ Update context and localStorage (only IDs)
-  const updatedCartIds = updatedCartState.map((p) => p.id);
-  setCarts(updatedCartIds);
-  localStorage.setItem("cart", JSON.stringify(updatedCartIds));
+  const removeProduct = (productId) => {
+    console.log({productId});
+    
+    const updatedCartState = cartState.filter((p) => p.productId !== productId);
+    setCartState(updatedCartState);
+    toast.info("Product removed from cart");
 
-  toast.info("Product removed from cart");
-};
-
-
-  const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
-  const total = subtotal + SHIPPING_COST;
+    // Optionally, call backend to remove item
+    axios
+      .delete(`${url}/cart/${loggedUser?.email}/item/${productId}`)
+      .catch((err) => console.error(err));
+  };
 
   if (cartState.length === 0)
     return (
@@ -50,13 +70,17 @@ removeFromCart(id)
       </div>
     );
 
+  // Calculate subtotal and total dynamically in frontend
+ const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
+ const total = subtotal + SHIPPING_COST;
+
   return (
     <div className="max-w-7xl mx-auto p-6 flex flex-col lg:flex-row gap-8">
       {/* Left: Cart Items */}
       <div className="flex-1 flex flex-col gap-6">
         {cartState.map((product) => (
           <div
-            key={product.id}
+            key={product.productId}
             className="flex flex-col md:flex-row items-center gap-4 border rounded-lg p-4 hover:shadow-lg transition-shadow"
           >
             <img
@@ -66,17 +90,17 @@ removeFromCart(id)
             />
             <div className="flex-1">
               <h2 className="text-lg font-semibold">{product.name}</h2>
-              <p className="text-gray-500">${product.price.toFixed(2)}</p>
+              <p className="text-gray-500">${product.price}</p>
               <div className="flex items-center gap-2 mt-2">
                 <button
-                  onClick={() => updateQuantity(product.id, -1)}
+                  onClick={() => updateQuantity(product.productId, -1)}
                   className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 >
                   -
                 </button>
                 <span className="px-2">{product.quantity}</span>
                 <button
-                  onClick={() => updateQuantity(product.id, 1)}
+                  onClick={() => updateQuantity(product.productId, 1)}
                   className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                 >
                   +
@@ -85,10 +109,10 @@ removeFromCart(id)
             </div>
             <div className="flex flex-col items-end gap-2">
               <p className="font-semibold">
-                ${(product.price * product.quantity).toFixed(2)}
+                ${(product.price * product.quantity)}
               </p>
               <button
-                onClick={() => removeProduct(product.id)}
+                onClick={() => removeProduct(product.productId)}
                 className="text-red-500 hover:underline"
               >
                 Remove
@@ -103,7 +127,7 @@ removeFromCart(id)
         <h2 className="text-xl font-bold mb-4">Order Summary</h2>
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>${subtotal.toFixed(2)}</span>
+          <span>${ subtotal.toFixed(2) }</span>
         </div>
         <div className="flex justify-between">
           <span>Shipping</span>
@@ -111,7 +135,7 @@ removeFromCart(id)
         </div>
         <div className="flex justify-between font-bold text-lg mt-2 border-t pt-2">
           <span>Total</span>
-          <span>${total.toFixed(2)}</span>
+          <span>${ total.toFixed(2) }</span>
         </div>
         <button
           onClick={() => toast.success("Proceeding to checkout...")}

@@ -8,6 +8,7 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     img: "",
     name: "",
+    description:'',
     price: "",
     star: 3.9,
     categoryId: "",
@@ -31,6 +32,7 @@ const AddProduct = () => {
     const newProduct = {
       img: formData.img,
       name: formData.name,
+      description:formData.description,
       price: parseFloat(formData.price),
       star: parseFloat(formData.star),
       categoryId: formData.categoryId,
@@ -52,6 +54,7 @@ const AddProduct = () => {
     setFormData({
       img: "",
       name: "",
+      description:'',
       price: "",
       star: 3.9,
       categoryId: "",
@@ -92,6 +95,19 @@ const AddProduct = () => {
             onChange={handleChange}
             placeholder="Enter product name"
             className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        {/* Product Name */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium mb-1">Product Description</label>
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Enter product Description"
+            className="px-3 py-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import "./Navbar.css";
 import { use, useContext } from "react";
@@ -7,10 +7,13 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
 import { toast } from "react-toastify";
 import { Menu } from "lucide-react";
+import useLoggedUser from "../../hooks/useLoggedUser";
 // import { getFromDb } from "../../utils/AddToLocalDB";
 
 const Navbar = () => {
   const { user, loading } = useContext(AuthContext);
+  const { loggedUser } = useLoggedUser();
+  const currentUser = loggedUser;
   const { carts } = use(ProductContext);
 
   // const carts = getFromDb() || [];
@@ -31,11 +34,15 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/requestProduct">Request Product</NavLink>
-      </li>
-      <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/products">Products</NavLink>
       </li>
+      {currentUser?.role !== "admin" ? (
+        <li className="hover:bg-[#FBBD23] hover:text-white">
+          <NavLink to="/requestProduct">Request Product</NavLink>
+        </li>
+      ) : (
+        ""
+      )}
       <li className="hover:bg-[#FBBD23] hover:text-white">
         <NavLink to="/reviews">Reviews</NavLink>
       </li>
@@ -43,14 +50,18 @@ const Navbar = () => {
         <NavLink to="/myProfile">Dashboard</NavLink>
       </li>
 
-      <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/cart" className="relative text-2xl">
-          <AiOutlineShoppingCart className="  " />
-          <span className="absolute -top-2 -right-2  bg-warning text-xs rounded-full px-1.5 text-white">
-            {carts.length}
-          </span>
-        </NavLink>
-      </li>
+      {currentUser?.role !== "admin" ? (
+        <li className="hover:bg-[#FBBD23] hover:text-white">
+          <NavLink to="/cart" className="relative text-2xl">
+            <AiOutlineShoppingCart className="  " />
+            <span className="absolute -top-2 -right-2  bg-warning text-xs rounded-full px-1.5 text-white">
+              {carts.length}
+            </span>
+          </NavLink>
+        </li>
+      ) : (
+        ""
+      )}
       {!user && (
         <li className="ml-4">
           <NavLink to="/login">Login</NavLink>

@@ -9,10 +9,12 @@ import { motion } from "framer-motion";
 
 import { use } from "react";
 import { ProductContext } from "../../contexts/AuthContext";
+import useLoggedUser from "../../hooks/useLoggedUser";
 
 const ProductDetails = () => {
   const product = useLoaderData();
- 
+  const { loggedUser } = useLoggedUser();
+
   if (!product) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -20,10 +22,28 @@ const ProductDetails = () => {
       </div>
     );
   }
-  const { name, img, price, star, category, id } = product;
-  const { addToCart } = use(ProductContext);
-  const handleAddToCart = (id) => {
-    addToCart(id);
+  const { name, img, price, star, category, _id } = product;
+
+  const handleAddToCart = async (productId) => {
+    if (!loggedUser?.email) {
+      return alert("Please login to add to cart");
+    }
+
+    await fetch("http://localhost:3000/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: loggedUser.email,
+        productId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        alert("ad to cart");
+      });
   };
 
   return (
@@ -92,14 +112,11 @@ const ProductDetails = () => {
           {/* ✅ Buttons */}
           <div className="flex flex-wrap gap-4 mt-6">
             <button
-              onClick={() => handleAddToCart(id)}
+              onClick={() => handleAddToCart(_id)}
               className="flex items-center gap-2 bg-[#FBBD23] hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition-all"
             >
               <AiOutlineShoppingCart className="text-xl" />
               Add to Cart
-            </button>
-            <button className="bg-black dark:bg-gray-800 hover:bg-[#FBBD23] text-white px-6 py-3 rounded-xl shadow-md transition-all">
-              Buy Now
             </button>
           </div>
         </motion.div>

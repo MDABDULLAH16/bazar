@@ -34,7 +34,7 @@ const GoogleSignIn = () => {
           })
           .catch((err) => {
             console.log(err);
-            toast.error("Login failed!");
+           
           });
       })
       .catch(() => toast.error("Google sign-in failed!"));
