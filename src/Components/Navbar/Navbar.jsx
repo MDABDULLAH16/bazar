@@ -90,6 +90,7 @@ const Navbar = () => {
                   <img
                     src={user.photoURL || "/default-avatar.png"}
                     alt="avatar"
+                    referrerPolicy="no-referrer"
                     className="w-8 h-8 rounded-full"
                   />
                   <span>{user.displayName || user.email}</span>

@@ -16,6 +16,9 @@ import ReviewPost from "../Pages/ReviewPost/ReviewPost";
 import AddProduct from "../Pages/AddProduct/AddProduct";
 import AddCategory from "../Pages/AddCategory/AddCategory";
 import MyAddedProducts from "../Pages/MyAddedProducts/MyAddedProducts";
+import AllUser from "../Pages/AllUser/AllUser";
+import AdminRoute from "./AdminRoute";
+import UserRoute from "./UserRoute";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const router = createBrowserRouter([
@@ -34,9 +37,7 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         loader: async () => {
-          const res = await fetch(
-            `${BACKEND_URL}/products`
-          );
+          const res = await fetch(`${BACKEND_URL}/products`);
           const data = await res.json();
           return data;
         },
@@ -45,9 +46,7 @@ export const router = createBrowserRouter([
       {
         path: "/products/:id",
         loader: async () => {
-          const res = await fetch(
-            `${BACKEND_URL}/products`
-          );
+          const res = await fetch(`${BACKEND_URL}/products`);
           const data = await res.json();
           return data;
         },
@@ -63,7 +62,7 @@ export const router = createBrowserRouter([
         },
         Component: Cart,
       },
-      
+
       {
         path: "reviews",
         loader: async () => {
@@ -76,9 +75,7 @@ export const router = createBrowserRouter([
       {
         path: "/productDetails/:id",
         loader: async ({ params }) => {
-          const res = await fetch(
-            `${BACKEND_URL}/products/${params.id}`
-          );
+          const res = await fetch(`${BACKEND_URL}/products/${params.id}`);
           const data = await res.json();
 
           return data || null;
@@ -102,23 +99,51 @@ export const router = createBrowserRouter([
               const data = await res.json();
               return data;
             },
-            Component: Cart,
+            element: (
+              <UserRoute>
+                <Cart></Cart>
+              </UserRoute>
+            ),
           },
           {
             path: "addReview",
-            Component: ReviewPost,
+            element: (
+              <UserRoute>
+                <ReviewPost></ReviewPost>
+              </UserRoute>
+            ),
+          },
+          {
+            path: "allUser",
+            element: (
+              <AdminRoute>
+                <AllUser></AllUser>
+              </AdminRoute>
+            ),
           },
           {
             path: "addCategory",
-            Component: AddCategory,
+            element: (
+              <AdminRoute>
+                <AddCategory></AddCategory>
+              </AdminRoute>
+            ),
           },
           {
             path: "myAddedProducts",
-            Component: MyAddedProducts,
+            element: (
+              <UserRoute>
+                <MyAddedProducts></MyAddedProducts>
+              </UserRoute>
+            ),
           },
           {
             path: "addProduct",
-            Component: AddProduct,
+            element: (
+              <AdminRoute>
+                <AddProduct></AddProduct>
+              </AdminRoute>
+            ),
           },
         ],
       },

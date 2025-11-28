@@ -16,6 +16,7 @@ const MyProfile = () => {
 
   const adminLinks = [
     { to: "", label: "My Profile" },
+    { to: "allUser", label: "All User" },
     { to: "addProduct", label: "Add Product" },
     { to: "myAddedProducts", label: "My Products" },
     { to: "addCategory", label: "Add Category" },
