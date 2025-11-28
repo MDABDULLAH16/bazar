@@ -17,10 +17,10 @@ const PaymentCancel = () => {
         </p>
 
         <Link
-          to="/myProfile/Carts"
+          to="/cart"
           className="btn bg-red-600 hover:bg-red-700 text-white w-full rounded-xl"
         >
-          Go Back to Dashboard
+          Go Back to Cart
         </Link>
 
         <Link to="/" className="block mt-4 text-red-700 hover:underline">

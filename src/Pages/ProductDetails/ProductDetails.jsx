@@ -10,7 +10,8 @@ import { motion } from "framer-motion";
 import { use } from "react";
 import { ProductContext } from "../../contexts/AuthContext";
 import useLoggedUser from "../../hooks/useLoggedUser";
-
+import { toast } from "react-toastify";
+const url = import.meta.env.BACKEND_URL;
 const ProductDetails = () => {
   const product = useLoaderData();
   const { loggedUser } = useLoggedUser();
@@ -26,10 +27,10 @@ const ProductDetails = () => {
 
   const handleAddToCart = async (productId) => {
     if (!loggedUser?.email) {
-      return alert("Please login to add to cart");
+      return toast.error("Please login to add to cart");
     }
 
-    await fetch("http://localhost:3000/cart/add", {
+    await fetch(`${url}/cart/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

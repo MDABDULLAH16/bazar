@@ -4,17 +4,19 @@ import { Link } from "react-router";
 import { use } from "react";
 import { ProductContext } from "../../../contexts/AuthContext";
 import useLoggedUser from "../../../hooks/useLoggedUser";
+import { toast } from "react-toastify";
 
+const url = import.meta.env.BACKEND_URL;
 const Card = ({ product }) => {
   const { name, img, price, star, _id } = product;
   const { loggedUser } = useLoggedUser();
 
   const handleAddToCart = async (productId) => {
     if (!loggedUser?.email) {
-      return alert("Please login to add to cart");
+      return toast.error("Please login to add to cart");
     }
 
-    await fetch("http://localhost:3000/cart/add", {
+    await fetch(`${url}/cart/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +29,7 @@ const Card = ({ product }) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        alert('ad to cart')
+        toast.success('Add Successful!')
       });
   };
 

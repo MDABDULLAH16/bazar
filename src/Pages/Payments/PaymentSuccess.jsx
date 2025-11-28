@@ -17,12 +17,7 @@ const PaymentSuccess = () => {
           request is now confirmed.
         </p>
 
-        <Link
-          to="/dashboard/myParcels"
-          className="btn bg-green-600 hover:bg-green-700 text-white w-full rounded-xl"
-        >
-          Go to Dashboard
-        </Link>
+      
 
         <Link to="/" className="block mt-4 text-green-700 hover:underline">
           Back to Home

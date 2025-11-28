@@ -3,13 +3,12 @@ import { toast } from "react-toastify";
 import useLoggedUser from "../../hooks/useLoggedUser";
 import axios from "axios";
 import { ProductContext } from "../../contexts/AuthContext";
- 
 
 const url = import.meta.env.VITE_BACKEND_URL;
 const SHIPPING_COST = 49;
 
 const Cart = () => {
-  const {setCarts}= useContext(ProductContext) 
+  const { setCarts } = useContext(ProductContext);
   const { loggedUser } = useLoggedUser();
   const [cart, setCart] = useState({
     items: [],
@@ -18,7 +17,6 @@ const Cart = () => {
   });
 
   const [cartState, setCartState] = useState([]);
- 
 
   useEffect(() => {
     if (loggedUser?.email) {
@@ -32,9 +30,7 @@ const Cart = () => {
         .catch((err) => console.error(err));
     }
   }, [loggedUser]);
- 
-  
-  
+
   // const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
   // const total = subtotal + SHIPPING_COST;
 
@@ -49,8 +45,8 @@ const Cart = () => {
   };
 
   const removeProduct = (productId) => {
-    console.log({productId});
-    
+    console.log({ productId });
+
     const updatedCartState = cartState.filter((p) => p.productId !== productId);
     setCartState(updatedCartState);
     toast.info("Product removed from cart");
@@ -71,8 +67,28 @@ const Cart = () => {
     );
 
   // Calculate subtotal and total dynamically in frontend
- const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
- const total = subtotal + SHIPPING_COST;
+  const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
+  const total = subtotal + SHIPPING_COST;
+ 
+
+const paymentInfo = {
+  price: total,
+  quantity: cartState.length,
+  email:loggedUser.email
+};
+  const handleBuyNow = async () => {
+    console.log(paymentInfo);
+    
+   await axios
+     .post(`${url}/create-checkout-session`, paymentInfo)
+     .then((res) => {
+       console.log(res.data);
+       window.open(res.data.url)
+     })
+     .catch((err) => {
+       console.log(err);
+     });
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-6 flex flex-col lg:flex-row gap-8">
@@ -109,7 +125,7 @@ const Cart = () => {
             </div>
             <div className="flex flex-col items-end gap-2">
               <p className="font-semibold">
-                ${(product.price * product.quantity)}
+                ${product.price * product.quantity}
               </p>
               <button
                 onClick={() => removeProduct(product.productId)}
@@ -127,7 +143,7 @@ const Cart = () => {
         <h2 className="text-xl font-bold mb-4">Order Summary</h2>
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>${ subtotal.toFixed(2) }</span>
+          <span>${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span>Shipping</span>
@@ -135,10 +151,10 @@ const Cart = () => {
         </div>
         <div className="flex justify-between font-bold text-lg mt-2 border-t pt-2">
           <span>Total</span>
-          <span>${ total.toFixed(2) }</span>
+          <span>${total.toFixed(2)}</span>
         </div>
         <button
-          onClick={() => toast.success("Proceeding to checkout...")}
+          onClick={handleBuyNow}
           className="mt-4 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition-colors"
         >
           Buy Now
