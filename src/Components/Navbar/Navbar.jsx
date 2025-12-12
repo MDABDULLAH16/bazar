@@ -37,6 +37,9 @@ const Navbar = () => {
        // -------------------- ADMIN NAV --------------------
        <>
          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/">Home</NavLink>
+         </li>
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
            <NavLink to="/myProfile/allProducts">All Products</NavLink>
          </li>
 
@@ -52,6 +55,9 @@ const Navbar = () => {
          </li>
          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
            <NavLink to="/reviews">Reviews</NavLink>
+         </li>
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/request-product">Request Product</NavLink>
          </li>
 
          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">

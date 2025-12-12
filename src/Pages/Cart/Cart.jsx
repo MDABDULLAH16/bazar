@@ -5,7 +5,7 @@ import axios from "axios";
 import { ProductContext } from "../../contexts/AuthContext";
 
 const url = import.meta.env.VITE_BACKEND_URL;
-const SHIPPING_COST = 49;
+const SHIPPING_COST = 5;
 
 const Cart = () => {
   const { setCarts } = useContext(ProductContext);

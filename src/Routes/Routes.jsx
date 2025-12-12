@@ -38,7 +38,14 @@ export const router = createBrowserRouter([
       { path: "/signup", Component: Signup },
       { path: "/payment-success", Component: PaymentSuccess },
       { path: "/payment-cancel", Component: PaymentCancel },
-
+      {
+        path: "request-product",
+        element: (
+          <UserRoute>
+            <RequestProduct></RequestProduct>
+          </UserRoute>
+        ),
+      },
       {
         path: "/products",
         loader: async () => {
@@ -97,15 +104,19 @@ export const router = createBrowserRouter([
         path: "myProfile",
         element: (
           <PrivateRoute>
-            <AdminRoute>
-
             <MyProfile></MyProfile>
-            </AdminRoute>
           </PrivateRoute>
         ),
         children: [
           { index: true, Component: Profile },
-          { path: "myRequest", Component: MyProducts },
+          {
+            path: "myRequest",
+            element: (
+              <UserRoute>
+                <MyProducts></MyProducts>
+              </UserRoute>
+            ),
+          },
           {
             path: "allProducts",
             loader: async () => {
@@ -152,14 +163,7 @@ export const router = createBrowserRouter([
               </AdminRoute>
             ),
           },
-          {
-            path: "myAddedProducts",
-            element: (
-              <UserRoute>
-                <MyAddedProducts></MyAddedProducts>
-              </UserRoute>
-            ),
-          },
+
           {
             path: "addProduct",
             element: (

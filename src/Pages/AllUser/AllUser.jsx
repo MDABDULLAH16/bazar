@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useLoggedUser from "../../hooks/useLoggedUser";
+import { toast } from "react-toastify";
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
 const AllUser = () => {
   const { loggedUser } = useLoggedUser();
   const currentEmail = loggedUser?.email;
+  const role = loggedUser?.role;
 
   const [users, setUsers] = useState([]);
 
@@ -36,7 +38,7 @@ const AllUser = () => {
        )
      );
 
-     alert("Role updated!");
+     toast.success("Role updated!");
    } catch (error) {
      console.error("Error making admin:", error);
      alert("Failed to update role.");

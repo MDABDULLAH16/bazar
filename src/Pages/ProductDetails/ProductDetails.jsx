@@ -7,15 +7,21 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
-import { use } from "react";
+import { use, useContext } from "react";
 import { ProductContext } from "../../contexts/AuthContext";
 import useLoggedUser from "../../hooks/useLoggedUser";
 import { toast } from "react-toastify";
-const url = import.meta.env.BACKEND_URL;
+import axios from "axios";
+
+
+const url = import.meta.env.VITE_BACKEND_URL;
+ 
+
+
 const ProductDetails = () => {
   const product = useLoaderData();
   const { loggedUser } = useLoggedUser();
-
+ const { carts, setCarts } = useContext(ProductContext);
   if (!product) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -25,26 +31,35 @@ const ProductDetails = () => {
   }
   const { name, img, price, star, category, _id } = product;
 
+ 
   const handleAddToCart = async (productId) => {
-    if (!loggedUser?.email) {
-      return toast.error("Please login to add to cart");
+    if (!loggedUser?.email) return toast.error("Please login to add to cart");
+    // ❗ Stop duplicate cart items
+    if (carts.some((item) => item.productId === productId)) {
+      return toast.error("Product already added to cart");
     }
+    const cartItem = {
+      email: loggedUser.email,
+      productId,
+      quantity: 1,
+    };
 
-    await fetch(`${url}/cart/add`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: loggedUser.email,
-        productId,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        alert("ad to cart");
-      });
+    try {
+      const response = await axios.post(`${url}/cart/add`, cartItem);
+
+      console.log("Cart Response:", response.data);
+
+      if (response.data.insertedId || response.data.success) {
+        toast.success("Product added to cart");
+        setCarts((prevProducts) => [...prevProducts, productId]);
+        console.log(carts);
+      } else {
+        toast.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("An error occurred while adding to cart");
+    }
   };
 
   return (

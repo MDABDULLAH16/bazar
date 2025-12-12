@@ -9,7 +9,7 @@ import { ProductContext } from "../../../contexts/AuthContext";
 const url = import.meta.env.VITE_BACKEND_URL;
 
 const Card = ({ product }) => {
-  const { carts,setCarts} = useContext(ProductContext);
+  const { carts, setCarts } = useContext(ProductContext);
   const { name, img, price, star, _id } = product;
   const { loggedUser } = useLoggedUser();
 
@@ -63,20 +63,21 @@ const Card = ({ product }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-4 pb-4">
-        <button
-          onClick={() => handleAddToCart(_id)}
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-        >
-          <AiOutlineHeart className="text-3xl text-red-500" />
-        </button>
+      <div className="flex items-center flex-col gap-2 justify-between px-4 pb-4">
+       
 
         <button
           onClick={() => handleAddToCart(_id)}
-          className="btn btn-warning text-white font-semibold hover:scale-105 transition-transform px-4 py-2 rounded-lg"
+          className="btn w-full btn-warning text-white font-semibold hover:scale-105 transition-transform px-4 py-2 rounded-lg"
         >
           Add To Cart
         </button>
+        <Link
+          to={`/productDetails/${_id}`}
+          className="btn w-full bg-red-500 text-white font-semibold hover:scale-105 transition-transform px-4 py-2 rounded-lg"
+        >
+          See Details
+        </Link>
       </div>
     </div>
   );

@@ -4,7 +4,8 @@ import useLoggedUser from "../../hooks/useLoggedUser";
 
 const MyProfile = () => {
   const { loggedUser } = useLoggedUser();
-  const role = loggedUser?.role; // optional chaining in case loggedUser is null
+  const role = loggedUser?.role; // optional chaining in case 
+console.log(role);
 
   // Define links for user and admin
   const userLinks = [
@@ -22,7 +23,7 @@ const MyProfile = () => {
     { to: "addCategory", label: "Add Category" },
   ];
 
-  const linksToRender = role === "admin"||'super-admin' ? adminLinks : userLinks;
+  const linksToRender = role === "admin"|| role==='super-admin' ? adminLinks : userLinks;
 
   return (
     <div className="p-6">

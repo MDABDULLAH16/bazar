@@ -1,21 +1,34 @@
-import React, { useContext, useEffect } from "react";
-import { AuthContext, ProductContext } from "../../contexts/AuthContext";
+import React, { useContext, useEffect, useState } from "react";
+import {   ProductContext } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
+import useLoggedUser from "../../hooks/useLoggedUser";
  
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-const MyProducts = () => {
-  const { user } = useContext(AuthContext);
-  const { products, setProducts } = useContext(ProductContext);
+import  axios  from 'axios';
+const MyProducts = (
+) => {
+  const { loggedUser } = useLoggedUser();
+  console.log(loggedUser);
+  
+const user = loggedUser?.email;
+   console.log(user);
+  const [products, setProducts] = useState([]);
 
-  // Fetch products by user email
+
   useEffect(() => {
-    if (user?.email) {
-      fetch(`${BACKEND_URL}/productRequest?email=${user.email}`)
-        .then((res) => res.json())
-        .then((data) => setProducts(data))
-        .catch((err) => console.error("Error fetching products:", err));
-    }
-  }, [user]);
+    fetch(`${BACKEND_URL}/productRequest?email=${user}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        
+        setProducts(data);
+      })
+      .catch((err) => console.error("Error fetching products:", err));
+  }, [user]);   
+ console.log(products);
+  
+
+  
 
   // Handle delete
   const handleDelete = (id) => {
@@ -73,7 +86,8 @@ const MyProducts = () => {
                   {product.description || "No description available."}
                 </p>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1 block">
-                  Price: {product.price ? `$${product.price}` : "Not listed"}
+                  Price:{" "}
+                  {product.priceRange ? `$${product.priceRange}` : "Not listed"}
                 </span>
               </div>
 
