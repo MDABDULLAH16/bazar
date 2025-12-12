@@ -28,47 +28,56 @@ const Navbar = () => {
   };
 
   // 🧩 Navigation Links
-  const navLinks = (
-    <div className=" flex flex-col lg:flex-row gap-3">
-      <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/">Home</NavLink>
-      </li>
-      <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/products">Products</NavLink>
-      </li>
-      {currentUser?.role !== "admin" ? (
-        <li className="hover:bg-[#FBBD23] hover:text-white">
-          <NavLink to="/requestProduct">Request Product</NavLink>
-        </li>
-      ) : (
-        ""
-      )}
-      <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/reviews">Reviews</NavLink>
-      </li>
-      <li className="hover:bg-[#FBBD23] hover:text-white">
-        <NavLink to="/myProfile">Dashboard</NavLink>
-      </li>
+ const isAdmin =
+   currentUser?.role === "admin" || currentUser?.role === "super-admin";
 
-      {currentUser?.role !== "admin" ? (
-        <li className="hover:bg-[#FBBD23] hover:text-white">
-          <NavLink to="/cart" className="relative text-2xl">
-            <AiOutlineShoppingCart className="  " />
-            <span className="absolute -top-2 -right-2  bg-warning text-xs rounded-full px-1.5 text-white">
-              {carts.length}
-            </span>
-          </NavLink>
-        </li>
-      ) : (
-        ""
-      )}
-      {!user && (
-        <li className="ml-4">
-          <NavLink to="/login">Login</NavLink>
-        </li>
-      )}
-    </div>
-  );
+ const navLinks = (
+   <div className="flex flex-col lg:flex-row gap-3 items-center">
+     {isAdmin ? (
+       // -------------------- ADMIN NAV --------------------
+       <>
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/myProfile/allProducts">All Products</NavLink>
+         </li>
+
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/myProfile">Dashboard</NavLink>
+         </li>
+       </>
+     ) : (
+       // -------------------- USER NAV --------------------
+       <>
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/">Home</NavLink>
+         </li>
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/reviews">Reviews</NavLink>
+         </li>
+
+         <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+           <NavLink to="/myProfile">Dashboard</NavLink>
+         </li>
+
+         <li className="hover:bg-[#FBBD23] hover:text-white relative text-2xl px-2 py-1 rounded">
+           <NavLink to="/cart">
+             <AiOutlineShoppingCart />
+             <span className="absolute -top-2 -right-2 bg-warning text-xs rounded-full px-1.5 text-white">
+               {carts.length}
+             </span>
+           </NavLink>
+         </li>
+       </>
+     )}
+
+     {/* Guest Login */}
+     {!user && (
+       <li className="ml-4 px-2 py-1 hover:bg-[#FBBD23] hover:text-white rounded">
+         <NavLink to="/login">Login</NavLink>
+       </li>
+     )}
+   </div>
+ );
+
 
   return (
     <div className="navbar bg-base-300 px-6 md:px-10 lg:px-14 sticky top-0 z-50 shadow-md">

@@ -88,21 +88,21 @@ const AllUser = () => {
                   </td>
 
                   <td className="px-4 py-2">
-                    {isSelf ? (
+                    {isSelf || user.role === "super-admin" ? (
                       <span className="text-gray-400">No Action</span>
-                    ) : user.role !== "admin" ? (
+                    ) : user.role === "admin" ? (
+                      <button
+                        onClick={() => handleMakeAdmin(user.email)}
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                      >
+                        Remove Admin
+                      </button>
+                    ) : (
                       <button
                         onClick={() => handleMakeAdmin(user.email)}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
                       >
                         Make Admin
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleMakeAdmin(user.email)}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                      >
-                        Delete Admin
                       </button>
                     )}
                   </td>

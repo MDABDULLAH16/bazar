@@ -7,7 +7,7 @@ const AdminRoute = ({children}) => {
     console.log({ loggedUser });
     const navigate = useNavigate()
     
-   if (loggedUser?.role==='admin') {
+   if (loggedUser?.role==='admin'||'super-admin') {
     return children
    } else {
        navigate('/')

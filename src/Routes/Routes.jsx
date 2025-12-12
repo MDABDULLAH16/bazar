@@ -22,6 +22,7 @@ import UserRoute from "./UserRoute";
 import PaymentSuccess from "../Pages/Payments/PaymentSuccess";
 import PaymentCancel from "../Pages/Payments/PaymentCancelled";
 import { param } from "framer-motion/client";
+import AllProducts from "../Pages/AllProducts/AllProducts";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const router = createBrowserRouter([
@@ -31,7 +32,6 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-
         Component: Home,
       },
       { path: "/login", Component: Login },
@@ -97,12 +97,24 @@ export const router = createBrowserRouter([
         path: "myProfile",
         element: (
           <PrivateRoute>
+            <AdminRoute>
+
             <MyProfile></MyProfile>
+            </AdminRoute>
           </PrivateRoute>
         ),
         children: [
           { index: true, Component: Profile },
           { path: "myRequest", Component: MyProducts },
+          {
+            path: "allProducts",
+            loader: async () => {
+              const res = await fetch(`${BACKEND_URL}/products`);
+              const data = await res.json();
+              return data;
+            },
+            Component: AllProducts,
+          },
           {
             path: "cart",
             loader: async () => {

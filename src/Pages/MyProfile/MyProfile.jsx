@@ -18,11 +18,11 @@ const MyProfile = () => {
     { to: "", label: "My Profile" },
     { to: "allUser", label: "All User" },
     { to: "addProduct", label: "Add Product" },
-    { to: "myAddedProducts", label: "My Products" },
+    { to: "allProducts", label: "All Products" },
     { to: "addCategory", label: "Add Category" },
   ];
 
-  const linksToRender = role === "admin" ? adminLinks : userLinks;
+  const linksToRender = role === "admin"||'super-admin' ? adminLinks : userLinks;
 
   return (
     <div className="p-6">
