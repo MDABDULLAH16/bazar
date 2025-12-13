@@ -50,7 +50,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink to="/reviews">Reviews</NavLink>
-          </li>          
+          </li>
           <li>
             <NavLink to="/myProfile">Dashboard</NavLink>
           </li>
@@ -63,12 +63,6 @@ const Navbar = () => {
             </NavLink>
           </li>
         </>
-      )}
-
-      {!user && (
-        <li>
-          <NavLink to="/login">Login</NavLink>
-        </li>
       )}
     </>
   );
@@ -85,31 +79,43 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-      {/* RIGHT: Desktop Menu */}
-      <div className="navbar-end hidden lg:flex items-center gap-6">
-        <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+      {/* CENTER: Nav Links (Desktop only) */}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal gap-2">{navLinks}</ul>
+      </div>
+
+      {/* RIGHT: User / Login */}
+      <div className="navbar-end hidden lg:flex items-center gap-4">
+        {!user && (
+          <NavLink to="/login" className="btn btn-sm btn-warning text-white">
+            Login
+          </NavLink>
+        )}
 
         {user && (
-          <div className="flex items-center gap-3">
-            <img
-              src={user.photoURL || "/default-avatar.png"}
-              alt="profile"
-              className="w-8 h-8 rounded-full border"
-            />
-            <span className="font-semibold">
-              {user.displayName || user.email}
-            </span>
+          <>
+            <div className="flex items-center gap-2">
+              <img
+                src={user.photoURL || "/default-avatar.png"}
+                alt="profile"
+                className="w-8 h-8 rounded-full border"
+              />
+              <span className="font-semibold">
+                {user.displayName || user.email}
+              </span>
+            </div>
+
             <button
               onClick={handleLogout}
               className="btn btn-sm btn-outline text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
             >
               Logout
             </button>
-          </div>
+          </>
         )}
       </div>
 
-      {/* RIGHT: Mobile Menu */}
+      {/* MOBILE MENU (Right) */}
       <div className="navbar-end lg:hidden">
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost">
@@ -122,24 +128,33 @@ const Navbar = () => {
           >
             {navLinks}
 
-            {user && (
-              <div className="mt-3 border-t pt-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <img
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt="avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span>{user.displayName || user.email}</span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left text-red-500 font-semibold"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
+            <div className="mt-3 border-t pt-3">
+              {!user && (
+                <NavLink to="/login" className="btn btn-sm btn-warning w-full">
+                  Login
+                </NavLink>
+              )}
+
+              {user && (
+                <>
+                  <div className="flex items-center gap-2 mb-2">
+                    <img
+                      src={user.photoURL || "/default-avatar.png"}
+                      alt="avatar"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span>{user.displayName || user.email}</span>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left text-red-500 font-semibold"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
           </ul>
         </div>
       </div>
