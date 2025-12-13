@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import axios from "axios";
 import Container from "../../Components/Container/Container";
 import { Edit, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
-
 
 const url = import.meta.env.VITE_BACKEND_URL;
 

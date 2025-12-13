@@ -6,6 +6,8 @@ import Container from "../../Components/Container/Container";
 const Products = () => {
   const { id } = useParams(); // category id if clicked
   const products = useLoaderData();
+  console.log(products);
+  
 
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [searchTerm, setSearchTerm] = useState("");

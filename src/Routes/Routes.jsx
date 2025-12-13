@@ -21,7 +21,7 @@ import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
 import PaymentSuccess from "../Pages/Payments/PaymentSuccess";
 import PaymentCancel from "../Pages/Payments/PaymentCancelled";
-import { param } from "framer-motion/client";
+ 
 import AllProducts from "../Pages/AllProducts/AllProducts";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -41,9 +41,11 @@ export const router = createBrowserRouter([
       {
         path: "request-product",
         element: (
-          <UserRoute>
-            <RequestProduct></RequestProduct>
-          </UserRoute>
+          <PrivateRoute>
+            <UserRoute>
+              <RequestProduct></RequestProduct>
+            </UserRoute>
+          </PrivateRoute>
         ),
       },
       {
@@ -54,6 +56,7 @@ export const router = createBrowserRouter([
           return data;
         },
         Component: Products,
+         
       },
       {
         path: "/products/:id",
@@ -125,6 +128,7 @@ export const router = createBrowserRouter([
               return data;
             },
             Component: AllProducts,
+            
           },
           {
             path: "cart",

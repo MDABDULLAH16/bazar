@@ -11,9 +11,9 @@ const url = import.meta.env.VITE_BACKEND_URL;
 const Card = ({ product }) => {
   const { carts, setCarts } = useContext(ProductContext);
   const { name, img, price, star, _id } = product;
-  const { loggedUser, loading } = useLoggedUser();
+  const { loggedUser } = useLoggedUser();
 
-  if (loading) return null; // or spinner
+ 
 
   const handleAddToCart = async (productId) => {
     if (!loggedUser?.email) return toast.error("Please login to add to cart");
@@ -66,7 +66,7 @@ const Card = ({ product }) => {
       </div>
 
       <div className="flex items-center flex-col gap-2 justify-between px-4 pb-4">
-        {loggedUser.role === "admin" || loggedUser.role === "super-admin" ? (
+        {loggedUser?.role === "admin" || loggedUser?.role === "super-admin" ? (
           <button className="btn w-full btn-disabled text-white font-semibold hover:scale-105 transition-transform px-4 py-2 rounded-lg">
             Add To Cart
           </button>

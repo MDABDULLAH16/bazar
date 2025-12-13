@@ -23,7 +23,7 @@ const TopProducts = () => {
         </h1>
         <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {topProducts.map((product) => (
-            <Card key={product.id} product={product}></Card>
+            <Card key={product._id} product={product}></Card>
           ))}
         </div>
         <div className="text-center my-6">

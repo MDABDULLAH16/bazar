@@ -7,26 +7,28 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import  axios  from 'axios';
 const MyProducts = (
 ) => {
-  const { loggedUser, loading } = useLoggedUser();
-
-  if (loading) return null; // or spinner
+  const { loggedUser } = useLoggedUser();
   console.log(loggedUser);
-
-  const user = loggedUser?.email;
-  console.log(user);
+  
+const user = loggedUser?.email;
+   console.log(user);
   const [products, setProducts] = useState([]);
+
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/productRequest?email=${user}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-
+        
         setProducts(data);
       })
       .catch((err) => console.error("Error fetching products:", err));
-  }, [user]);
-  console.log(products);
+  }, [user]);   
+ console.log(products);
+  
+
+  
 
   // Handle delete
   const handleDelete = (id) => {

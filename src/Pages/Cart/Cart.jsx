@@ -9,9 +9,7 @@ const SHIPPING_COST = 5;
 
 const Cart = () => {
   const { setCarts } = useContext(ProductContext);
-  const { loggedUser, loading } = useLoggedUser();
-
-  if (loading) return null; // or spinner
+  const { loggedUser } = useLoggedUser();
   const [cart, setCart] = useState({
     items: [],
     subtotal: 0,
@@ -71,24 +69,25 @@ const Cart = () => {
   // Calculate subtotal and total dynamically in frontend
   const subtotal = cartState.reduce((acc, p) => acc + p.price * p.quantity, 0);
   const total = subtotal + SHIPPING_COST;
+ 
 
-  const paymentInfo = {
-    price: total,
-    quantity: cartState.length,
-    email: loggedUser.email,
-  };
+const paymentInfo = {
+  price: total,
+  quantity: cartState.length,
+  email:loggedUser.email
+};
   const handleBuyNow = async () => {
     console.log(paymentInfo);
-
-    await axios
-      .post(`${url}/create-checkout-session`, paymentInfo)
-      .then((res) => {
-        console.log(res.data);
-        window.open(res.data.url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    
+   await axios
+     .post(`${url}/create-checkout-session`, paymentInfo)
+     .then((res) => {
+       console.log(res.data);
+       window.open(res.data.url)
+     })
+     .catch((err) => {
+       console.log(err);
+     });
   };
 
   return (

@@ -1,24 +1,23 @@
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import "./Navbar.css";
-import { use, useContext } from "react";
-import { AuthContext, ProductContext } from "../../contexts/AuthContext";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase.config";
-import { toast } from "react-toastify";
+import { useContext } from "react";
 import { Menu } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+
+import "./Navbar.css";
+import { AuthContext, ProductContext } from "../../contexts/AuthContext";
+import { auth } from "../../firebase/firebase.config";
 import useLoggedUser from "../../hooks/useLoggedUser";
-// import { getFromDb } from "../../utils/AddToLocalDB";
 
 const Navbar = () => {
-  const { user, } = useContext(AuthContext);
-  const { loggedUser } = useLoggedUser();
+  const { user } = useContext(AuthContext);
+  const { loggedUser, loading } = useLoggedUser();
+  const { carts = [] } = useContext(ProductContext);
 
-  // or spinner
-  const currentUser = loggedUser;
-  const { carts } = use(ProductContext);
-
-  // const carts = getFromDb() || [];
+  const isAdmin =
+    !loading &&
+    (loggedUser?.role === "admin" || loggedUser?.role === "super-admin");
 
   const handleLogout = async () => {
     try {
@@ -29,44 +28,33 @@ const Navbar = () => {
     }
   };
 
-  // 🧩 Navigation Links
-  const isAdmin =
-    currentUser?.role === "admin" || currentUser?.role === "super-admin";
-
   const navLinks = (
-    <div className="flex flex-col lg:flex-row gap-3 items-center">
+    <>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+
       {isAdmin ? (
-        // -------------------- ADMIN NAV --------------------
         <>
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+          <li>
             <NavLink to="/myProfile/allProducts">All Products</NavLink>
           </li>
-
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+          <li>
             <NavLink to="/myProfile">Dashboard</NavLink>
           </li>
         </>
       ) : (
-        // -------------------- USER NAV --------------------
         <>
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
-            <NavLink to="/">Home</NavLink>
+          <li>
+            <NavLink to="/products">Products</NavLink>
           </li>
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+          <li>
             <NavLink to="/reviews">Reviews</NavLink>
-          </li>
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
-            <NavLink to="/request-product">Request Product</NavLink>
-          </li>
-
-          <li className="hover:bg-[#FBBD23] hover:text-white px-2 py-1 rounded">
+          </li>          
+          <li>
             <NavLink to="/myProfile">Dashboard</NavLink>
           </li>
-
-          <li className="hover:bg-[#FBBD23] hover:text-white relative text-2xl px-2 py-1 rounded">
+          <li className="relative text-2xl">
             <NavLink to="/cart">
               <AiOutlineShoppingCart />
               <span className="absolute -top-2 -right-2 bg-warning text-xs rounded-full px-1.5 text-white">
@@ -77,82 +65,40 @@ const Navbar = () => {
         </>
       )}
 
-      {/* Guest Login */}
       {!user && (
-        <li className="ml-4 px-2 py-1 hover:bg-[#FBBD23] hover:text-white rounded">
+        <li>
           <NavLink to="/login">Login</NavLink>
         </li>
       )}
-    </div>
+    </>
   );
 
   return (
-    <div className="navbar bg-base-300 px-6 md:px-10 lg:px-14 sticky top-0 z-50 shadow-md">
-      {/* Brand */}
-      <div className="flex-1">
+    <div className="navbar bg-base-300 sticky top-0 z-50 shadow-md px-4">
+      {/* LEFT: Logo */}
+      <div className="navbar-start">
         <NavLink
           to="/"
-          className="btn btn-ghost normal-case text-xl font-bold text-primary"
+          className="btn btn-ghost text-xl font-bold text-primary"
         >
           UrbanCart
         </NavLink>
       </div>
 
-      {/* Mobile Menu */}
-      <div className="flex-none lg:hidden">
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost">
-            <Menu></Menu>
-          </label>
+      {/* RIGHT: Desktop Menu */}
+      <div className="navbar-end hidden lg:flex items-center gap-6">
+        <ul className="menu menu-horizontal px-1">{navLinks}</ul>
 
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 p-4 shadow bg-base-100 rounded-box w-52 font-semibold"
-          >
-            {navLinks}
-            {/* ✅ Mobile: show user info if logged in */}
-            {user && (
-              <li className="mt-2 border-t pt-2">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span>{user.displayName || user.email}</span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="text-red-500 mt-2 font-semibold"
-                >
-                  Logout
-                </button>
-              </li>
-            )}
-          </ul>
-        </div>
-      </div>
-
-      {/* Desktop Menu */}
-      <div className="hidden lg:flex flex-none items-center space-x-6">
-        <ul className="menu menu-horizontal font-semibold text-base">
-          {navLinks}
-        </ul>
-
-        {/* ✅ User Info (Desktop) */}
-        {!loading && user && (
+        {user && (
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <img
-                src={user.photoURL || "/default-avatar.png"}
-                alt="profile"
-                className="w-8 h-8 rounded-full border border-gray-400"
-              />
-              <span className="font-semibold text-gray-800 dark:text-gray-200">
-                {user.displayName || user.email}
-              </span>
-            </div>
+            <img
+              src={user.photoURL || "/default-avatar.png"}
+              alt="profile"
+              className="w-8 h-8 rounded-full border"
+            />
+            <span className="font-semibold">
+              {user.displayName || user.email}
+            </span>
             <button
               onClick={handleLogout}
               className="btn btn-sm btn-outline text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
@@ -161,6 +107,41 @@ const Navbar = () => {
             </button>
           </div>
         )}
+      </div>
+
+      {/* RIGHT: Mobile Menu */}
+      <div className="navbar-end lg:hidden">
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} className="btn btn-ghost">
+            <Menu />
+          </label>
+
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 p-4 shadow bg-base-100 rounded-box w-56 font-semibold"
+          >
+            {navLinks}
+
+            {user && (
+              <div className="mt-3 border-t pt-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <img
+                    src={user.photoURL || "/default-avatar.png"}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span>{user.displayName || user.email}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left text-red-500 font-semibold"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   );
