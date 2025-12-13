@@ -12,9 +12,9 @@ import useLoggedUser from "../../hooks/useLoggedUser";
 
 const Navbar = () => {
   const { user, } = useContext(AuthContext);
-  const { loggedUser, loading } = useLoggedUser();
+  const { loggedUser } = useLoggedUser();
 
-  if (loading) return null; // or spinner
+  // or spinner
   const currentUser = loggedUser;
   const { carts } = use(ProductContext);
 
