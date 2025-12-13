@@ -23,6 +23,7 @@ const MyProfile = () => {
     { to: "allUser", label: "All User" },
     { to: "addProduct", label: "Add Product" },
     { to: "allProducts", label: "All Products" },
+    { to: "categories", label: "Categories Management" },
     { to: "addCategory", label: "Add Category" },
   ];
 

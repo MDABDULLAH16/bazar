@@ -23,6 +23,7 @@ import PaymentSuccess from "../Pages/Payments/PaymentSuccess";
 import PaymentCancel from "../Pages/Payments/PaymentCancelled";
  
 import AllProducts from "../Pages/AllProducts/AllProducts";
+import CategoriesManagement from "../Pages/CategoriesManagement/CategoriesManagement";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const router = createBrowserRouter([
@@ -164,6 +165,14 @@ export const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <AddCategory></AddCategory>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "categories",
+            element: (
+              <AdminRoute>
+                <CategoriesManagement></CategoriesManagement>
               </AdminRoute>
             ),
           },
