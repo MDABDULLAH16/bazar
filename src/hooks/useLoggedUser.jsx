@@ -1,33 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
-import axios from "axios";
-
-const url = import.meta.env.VITE_BACKEND_URL;
+import useAxiosSecure from "./useAxiosSecure";
 
 const useLoggedUser = () => {
   const [loggedUser, setLoggedUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    if (!user?.email) return; // wait until user is loaded
+    if (!user?.email) return;
 
-    const controller = new AbortController(); // for canceling request if unmounted
-
-    axios
-      .get(`${url}/logged-user?email=${user.email}`, {
-        signal: controller.signal,
+    setLoading(true);
+    axiosSecure
+      .get(`/logged-user?email=${user.email}`)
+      .then((res) => {
+        setLoggedUser(res.data);
       })
-      .then((response) => setLoggedUser(response.data))
-      .catch((err) => {
-        if (err.name !== "CanceledError") {
-          console.error("Failed to fetch logged user:", err);
-        }
-      });
+      .finally(() => setLoading(false));
+  }, [user?.email, axiosSecure]);
 
-    return () => controller.abort(); // cleanup on unmount
-  }, [user?.email]); // only run when user.email changes
-
-  return { loggedUser };
+  return { loggedUser, loading };
 };
 
 export default useLoggedUser;

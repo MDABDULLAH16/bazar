@@ -23,7 +23,7 @@ console.log(role);
     { to: "addCategory", label: "Add Category" },
   ];
 
-  const linksToRender = role === "admin"|| role==='super-admin' ? adminLinks : userLinks;
+  const linksToRender = role === "admin" || role==='super-admin' ? adminLinks : userLinks;
 
   return (
     <div className="p-6">

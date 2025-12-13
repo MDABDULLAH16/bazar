@@ -1,19 +1,15 @@
-import React from "react";
-import useLoggedUser from "../hooks/useLoggedUser";
 import { Navigate } from "react-router";
+import useLoggedUser from "../hooks/useLoggedUser";
 
 const AdminRoute = ({ children }) => {
-  const { loggedUser } = useLoggedUser();
+  const { loggedUser, loading } = useLoggedUser();
 
-  if (!loggedUser) {
-    return <Navigate to="/" replace />;
-  }
+  if (loading) return null; // or spinner
 
-  if (loggedUser.role === "admin" || loggedUser.role === "super-admin") {
+  if (loggedUser?.role === "admin" || loggedUser?.role === "super-admin") {
     return children;
   }
 
   return <Navigate to="/" replace />;
 };
-
 export default AdminRoute;

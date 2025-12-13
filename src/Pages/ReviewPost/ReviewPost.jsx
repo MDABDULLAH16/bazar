@@ -49,7 +49,7 @@ const ReviewPost = () => {
           <input
             type="text"
             placeholder="Product name"
-            value={imgUrl}
+            value={name}
             onChange={(e) => setName(e.target.value)}
             required
             className="w-full p-2 border rounded-lg"
