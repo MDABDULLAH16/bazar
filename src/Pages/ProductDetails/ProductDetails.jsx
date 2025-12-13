@@ -20,8 +20,10 @@ const url = import.meta.env.VITE_BACKEND_URL;
 
 const ProductDetails = () => {
   const product = useLoaderData();
-  const { loggedUser } = useLoggedUser();
- const { carts, setCarts } = useContext(ProductContext);
+  const { loggedUser, loading } = useLoggedUser();
+
+  if (loading) return null; // or spinner
+  const { carts, setCarts } = useContext(ProductContext);
   if (!product) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
@@ -31,7 +33,6 @@ const ProductDetails = () => {
   }
   const { name, img, price, star, category, _id } = product;
 
- 
   const handleAddToCart = async (productId) => {
     if (!loggedUser?.email) return toast.error("Please login to add to cart");
     // ❗ Stop duplicate cart items
@@ -127,13 +128,24 @@ const ProductDetails = () => {
 
           {/* ✅ Buttons */}
           <div className="flex flex-wrap gap-4 mt-6">
-            <button
-              onClick={() => handleAddToCart(_id)}
-              className="flex items-center gap-2 bg-[#FBBD23] hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition-all"
-            >
-              <AiOutlineShoppingCart className="text-xl" />
-              Add to Cart
-            </button>
+            {loggedUser.role === "admin" ||
+            loggedUser.role === "super-admin" ? (
+              <button
+                 
+                className="flex btn-disabled items-center gap-2 btn text-white px-6 py-3 rounded-xl shadow-md transition-all"
+              >
+                <AiOutlineShoppingCart className="text-xl" />
+                Add to Cart
+              </button>
+            ) : (
+              <button
+                onClick={() => handleAddToCart(_id)}
+                className="flex items-center gap-2 bg-[#FBBD23] hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition-all"
+              >
+                <AiOutlineShoppingCart className="text-xl" />
+                Add to Cart
+              </button>
+            )}
           </div>
         </motion.div>
       </div>

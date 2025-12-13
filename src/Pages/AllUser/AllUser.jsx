@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 const url = import.meta.env.VITE_BACKEND_URL;
 
 const AllUser = () => {
-  const { loggedUser } = useLoggedUser();
+  const { loggedUser, loading } = useLoggedUser();
+
+  if (loading) return null; // or spinner
   const currentEmail = loggedUser?.email;
   const role = loggedUser?.role;
 
@@ -23,28 +25,26 @@ const AllUser = () => {
     };
 
     fetchUsers();
-  }, []); 
+  }, []);
 
- const handleMakeAdmin = async (email) => {
-   try {
-     const res = await axios.patch(`${url}/users/toggleRole?email=${email}`);
-       const updatedUser = res.data;
-       console.log({updatedUser});
-       
+  const handleMakeAdmin = async (email) => {
+    try {
+      const res = await axios.patch(`${url}/users/toggleRole?email=${email}`);
+      const updatedUser = res.data;
+      console.log({ updatedUser });
 
-     setUsers((prevUsers) =>
-       prevUsers.map((u) =>
-         u.email === email ? { ...u, role: updatedUser.newRole } : u
-       )
-     );
+      setUsers((prevUsers) =>
+        prevUsers.map((u) =>
+          u.email === email ? { ...u, role: updatedUser.newRole } : u
+        )
+      );
 
-     toast.success("Role updated!");
-   } catch (error) {
-     console.error("Error making admin:", error);
-     alert("Failed to update role.");
-   }
- };
-
+      toast.success("Role updated!");
+    } catch (error) {
+      console.error("Error making admin:", error);
+      alert("Failed to update role.");
+    }
+  };
 
   return (
     <div className="p-6">

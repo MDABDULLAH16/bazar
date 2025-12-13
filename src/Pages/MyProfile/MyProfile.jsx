@@ -3,9 +3,12 @@ import { NavLink, Outlet } from "react-router";
 import useLoggedUser from "../../hooks/useLoggedUser";
 
 const MyProfile = () => {
-  const { loggedUser } = useLoggedUser();
-  const role = loggedUser?.role; // optional chaining in case 
-console.log(role);
+  const { loggedUser, loading } = useLoggedUser();
+
+  if (loading) return null; // or spinner
+  const role = loggedUser?.role;
+  console.log(role);
+  
 
   // Define links for user and admin
   const userLinks = [
@@ -23,7 +26,8 @@ console.log(role);
     { to: "addCategory", label: "Add Category" },
   ];
 
-  const linksToRender = role === "admin" || role==='super-admin' ? adminLinks : userLinks;
+  const linksToRender =
+    role === "admin" || role === "super-admin" ? adminLinks : userLinks;
 
   return (
     <div className="p-6">
